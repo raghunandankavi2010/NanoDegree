@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/toolbarTheme"
+        app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    <TextView
+        android:layout_below="@id/toolbar"
+        android:textColor="@color/colorBlack"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Nano Degree Apps!"
+        android:id="@+id/textView"/>
+
+    <Button
+        android:onClick="buttonClick"
+        style="@style/button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/b1"
+        android:id="@+id/b1"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:onClick="buttonClick"
+        style="@style/button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/b2"
+        android:id="@+id/b2"
+        android:layout_below="@+id/b1"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:onClick="buttonClick"
+        style="@style/button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/b3"
+        android:id="@+id/b3"
+        android:layout_below="@+id/b2"
+        android:layout_marginTop="10dp"/>
+    <Button
+        android:onClick="buttonClick"
+        style="@style/button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/b4"
+        android:id="@+id/b4"
+        android:layout_below="@+id/b3"
+        android:layout_marginTop="10dp"/>
+    <Button
+        android:onClick="buttonClick"
+        style="@style/button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/b5"
+        android:id="@+id/b5"
+        android:layout_below="@+id/b4"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:onClick="buttonClick"
+        android:textColor="@color/colorWhite"
+        android:background="@color/red"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/b6"
+        android:id="@+id/b6"
+        android:layout_below="@+id/b5"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>
