@@ -79,8 +79,8 @@ public class MovieListFragment extends Fragment implements FragmentNetWorkReques
         // If we haven't retained the worker fragment, then create it
         // and set this UIFragment as the TaskFragment's target fragment.
         if (mTaskFragment == null) {
-            mTaskFragment =  new FragmentNetWorkRequest();//.newInstance("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
-            mTaskFragment.setTargetFragment(this, 0);
+            mTaskFragment =  FragmentNetWorkRequest.newInstance("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
+            mTaskFragment.setFragment(this);
             fm.beginTransaction().add(mTaskFragment, TAG_TASK_FRAGMENT).commit();
         }else
         {

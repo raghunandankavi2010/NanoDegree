@@ -31,6 +31,7 @@ import raghu.spotifystreamer.Models.MoviesList;
 import raghu.spotifystreamer.Utilities.CheckNetwork;
 import raghu.spotifystreamer.Utilities.Constants;
 import raghu.spotifystreamer.Utilities.Utils;
+import raghu.spotifystreamer.fragments.MovieListFragment;
 
 /**
  * Created by Raghunandan on 23-09-2015.
@@ -44,6 +45,7 @@ public class FragmentNetWorkRequest  extends Fragment {
 
     public static FragmentNetWorkRequest  newInstance(String url)
     {
+
         FragmentNetWorkRequest f = new FragmentNetWorkRequest();
         Bundle b = new Bundle();
         b.putString("url", url);
@@ -74,6 +76,17 @@ public class FragmentNetWorkRequest  extends Fragment {
         return sortOrder;
     }
 
+    public void setFragment(Fragment fragment) {
+        if (!(fragment instanceof TaskCallbacks)) {
+            throw new IllegalStateException("Target fragment must implement the TaskCallbacks interface.");
+        }
+
+        // Hold a reference to the target fragment so we can report back the task's
+        // current progress and results.
+        mCallbacks = (TaskCallbacks) fragment;
+    }
+
+
     /**
      * Callback interface through which the fragment will report the
      * task's progress and results back to the Activity.
@@ -96,15 +109,15 @@ public class FragmentNetWorkRequest  extends Fragment {
      * each configuration change.
      */
 
-   /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        //Activity activity = (Activity) context;
-        super.onAttach(context);
-
-
-
-    }*/
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        //Activity activity = (Activity) context;
+//        super.onAttach(context);
+//
+//
+//
+//    }
 
     /**
      * This method will only be called once when the retained
@@ -117,17 +130,11 @@ public class FragmentNetWorkRequest  extends Fragment {
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 
-        if (!(getTargetFragment() instanceof TaskCallbacks)) {
-            throw new IllegalStateException("Target fragment must implement the TaskCallbacks interface.");
-        }
 
-        // Hold a reference to the target fragment so we can report back the task's
-        // current progress and results.
-        mCallbacks = (TaskCallbacks) getTargetFragment();
 
         // Create and execute the background task.
         mTask = new DummyTask();
-        mTask.execute();//(String)getArguments().getString("url"));
+        mTask.execute((String)getArguments().getString("url"));
         mRunning = true;
 
     }
@@ -207,7 +214,7 @@ public class FragmentNetWorkRequest  extends Fragment {
             String response;
             URL url;
             try {
-                url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
+                url = new URL(ignore[0]);//("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
                 urlConn = (HttpURLConnection) url.openConnection();
                 urlConn.setReadTimeout(5000) ;
                 urlConn.setConnectTimeout(5000);

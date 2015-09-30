@@ -25,7 +25,7 @@ import raghu.spotifystreamer.views.EmptyRecyclerView;
 /**
  * Created by Raghunandan on 28-09-2015.
  */
-public class SortedMoviesFragment extends Fragment implements SortedNetworkRequest.TaskCallbacks2 {
+public class SortedMoviesFragment extends Fragment implements FragmentNetWorkRequest.TaskCallbacks {
 
     private TextView empty_tv;
     private EmptyRecyclerView mRecyclerview;
@@ -35,7 +35,7 @@ public class SortedMoviesFragment extends Fragment implements SortedNetworkReque
 
     private static final String TAG_TASK_FRAGMENT_SORTED = "task_fragment_sorted";
 
-    private SortedNetworkRequest mTaskFragment;
+    private FragmentNetWorkRequest mTaskFragment;
 
     @Nullable
     @Override
@@ -43,13 +43,13 @@ public class SortedMoviesFragment extends Fragment implements SortedNetworkReque
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        mTaskFragment = (SortedNetworkRequest) fm.findFragmentByTag(TAG_TASK_FRAGMENT_SORTED);
+        mTaskFragment = (FragmentNetWorkRequest) fm.findFragmentByTag(TAG_TASK_FRAGMENT_SORTED);
 
         // If we haven't retained the worker fragment, then create it
         // and set this UIFragment as the TaskFragment's target fragment.
         if (mTaskFragment == null) {
-            mTaskFragment =  new SortedNetworkRequest();//.newInstance("http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
-            mTaskFragment.setTargetFragment(this,1);
+            mTaskFragment =  FragmentNetWorkRequest.newInstance("http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
+            mTaskFragment.setFragment(this);
             fm.beginTransaction().add(mTaskFragment, TAG_TASK_FRAGMENT_SORTED).commit();
         }
 
