@@ -1,6 +1,7 @@
 package raghu.spotifystreamer;
 
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,17 +18,24 @@ import java.util.Comparator;
 import java.util.List;
 
 import raghu.spotifystreamer.Models.Movies;
+import raghu.spotifystreamer.Utilities.CheckNetwork;
 import raghu.spotifystreamer.Utilities.Constants;
 import raghu.spotifystreamer.fragments.MovieListFragment;
+import raghu.spotifystreamer.fragments.SortedMoviesFragment;
 
-public class MainActivity extends AppCompatActivity implements FragmentNetWorkRequest.TaskCallbacks {
+public class MainActivity extends AppCompatActivity {
 
 
-    private static final String TAG_TASK_FRAGMENT = "task_fragment";
-
-    private FragmentNetWorkRequest mTaskFragment;
     private MovieListFragment movieFrag;
+    private SortedMoviesFragment movieSort;
+    private static final String TAG_TASK_FRAGMENT = "task_fragment";
+    private static final String TAG_MOVIES_FRAGMENT = "movies_fragment";
+    private static final String TAG_AVERAGE_FRAGMENT = "average_rating_fragment";
 
+    private String mWhichFragment;
+    private FragmentManager fm ;
+    private static boolean check;
+    private FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,70 +47,23 @@ public class MainActivity extends AppCompatActivity implements FragmentNetWorkRe
         setSupportActionBar(toolbar);
 
 
+        fm = getSupportFragmentManager();
+
         toolbar.setNavigationIcon(R.drawable.ic_drawer);
-
-        FragmentManager fm = getSupportFragmentManager();
-        mTaskFragment = (FragmentNetWorkRequest) fm.findFragmentByTag(TAG_TASK_FRAGMENT);
-
-        // If the Fragment is non-null, then it is currently being
-        // retained across a configuration change.
-        if (mTaskFragment == null) {
-            mTaskFragment = new FragmentNetWorkRequest();
-            fm.beginTransaction().add(mTaskFragment, TAG_TASK_FRAGMENT).commit();
-        }
-
-        if (savedInstanceState != null && savedInstanceState.containsKey("bool") && savedInstanceState.getBoolean("bool")) {
-           /*mList = savedInstanceState.getParcelableArrayList("list");*/
-            movieFrag = (MovieListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.list);
-            movieFrag.displayGridImages(mTaskFragment.getMoviesList());
-        }
-
-    }
-
-    @Override
-    public void onPreExecute() {
-
-         movieFrag = (MovieListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.list);
-
-        if (movieFrag != null) {
-            movieFrag.displayProgressBar();
-        }
-    }
-
-    @Override
-    public void onProgressUpdate(int percent) {
-
-    }
-
-    @Override
-    public void onCancelled() {
-
-
-    }
-
-
-
-    @Override
-    public void onPostExecute() {
-
-
-        if (movieFrag != null) {
-            movieFrag.hideProgressBar();
-            movieFrag.displayGridImages(mTaskFragment.getMoviesList());
-        }else
+        if(savedInstanceState == null && check==false)
         {
-            Toast.makeText(getApplicationContext(),"Something Wrong",Toast.LENGTH_SHORT).show();
+            mWhichFragment = "movieFrag";
+            if(movieFrag == null) {
+                movieFrag = new MovieListFragment();
+                FragmentManager fm = getSupportFragmentManager();
+                fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.container, movieFrag, TAG_MOVIES_FRAGMENT);
+                fragmentTransaction.commit();
+                //Toast.makeText(this, " attached", Toast.LENGTH_SHORT).show();
+            }
+
+
         }
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if(mTaskFragment.getMoviesList()!=null && mTaskFragment.getMoviesList().size()>0)
-            outState.putBoolean("bool",true);
 
     }
 
@@ -117,10 +78,22 @@ public class MainActivity extends AppCompatActivity implements FragmentNetWorkRe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sortP:
-                mTaskFragment.setSortOrder("Popularity");
+                mWhichFragment = "movieFrag";
+                movieFrag = new MovieListFragment();
+                FragmentManager fm = getSupportFragmentManager();
+                fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.container, movieFrag, TAG_MOVIES_FRAGMENT);
+                fragmentTransaction.commit();
+
                 return true;
             case R.id.sortR:
-                mTaskFragment.setSortOrder("Average");
+                check = true;
+                mWhichFragment = "averageFrag";
+                movieSort = new SortedMoviesFragment();
+                FragmentManager fm1 = getSupportFragmentManager();
+                fragmentTransaction = fm1.beginTransaction();
+                fragmentTransaction.replace(R.id.container, movieSort, TAG_AVERAGE_FRAGMENT);
+                fragmentTransaction.commit();
                 return true;
         }
 

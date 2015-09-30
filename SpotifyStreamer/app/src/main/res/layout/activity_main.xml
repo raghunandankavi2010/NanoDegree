@@ -9,9 +9,10 @@
 
     <include layout="@layout/toolbar_actionbar"/>
 
-    <fragment android:name="raghu.spotifystreamer.fragments.MovieListFragment"
+    <RelativeLayout
+
               android:layout_below="@+id/toolbar"
-              android:id="@+id/list"
+              android:id="@+id/container"
               android:layout_width="match_parent"
               android:layout_height="match_parent" />
 </RelativeLayout>

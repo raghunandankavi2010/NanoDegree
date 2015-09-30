@@ -1,35 +1,25 @@
 package raghu.spotifystreamer;
 
-import android.app.Activity;
+/**
+ * Created by Raghunandan on 30-09-2015.
+ */
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
-import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.ArtistsPager;
 import raghu.spotifystreamer.Models.Movies;
 import raghu.spotifystreamer.Models.MoviesList;
-import raghu.spotifystreamer.Utilities.CheckNetwork;
-import raghu.spotifystreamer.Utilities.Constants;
 import raghu.spotifystreamer.Utilities.Utils;
 
 /**
@@ -39,7 +29,7 @@ import raghu.spotifystreamer.Utilities.Utils;
 // Source picked from Alex LockWood blog post
 // http://www.androiddesignpatterns.com/2013/04/retaining-objects-across-config-changes.html
 // Required to handle orientation change. Fragment retain state and callback required to update ui
-public class FragmentNetWorkRequest  extends Fragment {
+public class SortedNetworkRequest  extends Fragment {
 
 
     public static FragmentNetWorkRequest  newInstance(String url)
@@ -65,8 +55,8 @@ public class FragmentNetWorkRequest  extends Fragment {
 
     public void setSortOrder(String url) {
         this.sortOrder = sortOrder;
-            mTask = new DummyTask();
-            mTask.execute(url);
+        mTask = new DummyTask();
+        mTask.execute(url);
     }
 
     public String getSortOrder() {
@@ -78,14 +68,14 @@ public class FragmentNetWorkRequest  extends Fragment {
      * Callback interface through which the fragment will report the
      * task's progress and results back to the Activity.
      */
-    public interface TaskCallbacks {
+    public interface TaskCallbacks2 {
         void onPreExecute();
         void onProgressUpdate(int percent);
         void onCancelled();
         void onPostExecute();
     }
 
-    private TaskCallbacks mCallbacks;
+    private TaskCallbacks2 mCallbacks;
     private DummyTask mTask;
     private boolean mRunning;
 
@@ -95,8 +85,8 @@ public class FragmentNetWorkRequest  extends Fragment {
      * will pass us a reference to the newly created Activity after
      * each configuration change.
      */
-
-   /* @Override
+/*
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         //Activity activity = (Activity) context;
@@ -116,18 +106,17 @@ public class FragmentNetWorkRequest  extends Fragment {
 
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
-
-        if (!(getTargetFragment() instanceof TaskCallbacks)) {
+        if (!(getTargetFragment() instanceof TaskCallbacks2)) {
             throw new IllegalStateException("Target fragment must implement the TaskCallbacks interface.");
         }
 
         // Hold a reference to the target fragment so we can report back the task's
         // current progress and results.
-        mCallbacks = (TaskCallbacks) getTargetFragment();
+        mCallbacks = (TaskCallbacks2) getTargetFragment();
 
         // Create and execute the background task.
         mTask = new DummyTask();
-        mTask.execute();//(String)getArguments().getString("url"));
+        mTask.execute();
         mRunning = true;
 
     }
@@ -207,7 +196,7 @@ public class FragmentNetWorkRequest  extends Fragment {
             String response;
             URL url;
             try {
-                url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
+                url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=6d32f2a6596004bb66069187b4c9b933");
                 urlConn = (HttpURLConnection) url.openConnection();
                 urlConn.setReadTimeout(5000) ;
                 urlConn.setConnectTimeout(5000);
@@ -215,7 +204,7 @@ public class FragmentNetWorkRequest  extends Fragment {
                 InputStream in = new BufferedInputStream(urlConn.getInputStream());
                 response = Utils.getStringFromInputStream(in);
 
-                Gson  gson = new Gson();
+                Gson gson = new Gson();
                 MoviesList responseModel = gson.fromJson(response, MoviesList.class);
 
                 moviesList = responseModel.getResults();
@@ -227,19 +216,11 @@ public class FragmentNetWorkRequest  extends Fragment {
             } finally
             {
                 if(urlConn!=null)
-                urlConn.disconnect();
+                    urlConn.disconnect();
             }
 
             return moviesList;
 
-          /*  SpotifyApi api = new SpotifyApi();
-
-            // Most (but not all) of the Spotify Web API endpoints require authorisation.
-            // If you know you'll only use the ones that don't require authorisation you can skip this step
-            api.setAccessToken("6d32f2a6596004bb66069187b4c9b933");
-
-            SpotifyService spotify = api.getService();
-            ArtistsPager results = spotify.searchArtists("Beyonce");*/
 
         }
 
