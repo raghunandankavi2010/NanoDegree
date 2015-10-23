@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SpotifyStreamer</string>
+    <string name="phone_size">w185</string>
+    <string name="size_92">w92</string>
+    <string name="size_154">w154</string>
+    <string name="size_342">w342</string>
+    <string name="size_500">w500</string>
+    <string name="size_780">w780</string>
+    <string name="original">original</string>
+    <string name="empty_list_content">No data available</string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="account_type">raghu.spotifystreamer.popularmovies</string>
+    <string name="content_authority">raghu.spotifystreamer.provider</string>
+
+</resources>
