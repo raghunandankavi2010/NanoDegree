@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Movies2</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="phone_size">w185</string>
+    <string name="size_92">w92</string>
+    <string name="size_154">w154</string>
+    <string name="size_342">w342</string>
+    <string name="size_500">w500</string>
+    <string name="size_780">w780</string>
+</resources>
