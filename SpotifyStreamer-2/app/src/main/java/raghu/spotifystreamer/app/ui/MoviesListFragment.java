@@ -165,6 +165,8 @@ public class MoviesListFragment extends Fragment {
         }
         outState.putBoolean(REQUEST_PEDNING, mRequestPending);
         outState.putBoolean(ERROR, mError);
+
+
         //outState.putBoolean(LOAD_MORE, mLoadMore);
 
     }

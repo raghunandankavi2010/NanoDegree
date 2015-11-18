@@ -12,13 +12,14 @@ public class Movies implements Parcelable {
     private int id,vote_count,favourite;
     private float vote_average,popularity;
 
-    private String original_language,original_title,overview,release_date,poster_path,title,generids,backdrop;
-    private boolean video;
+    private String original_language,original_title,overview,release_date,poster_path,title,generids,backdrop_path;
+    private boolean video,favored;
 
-    public Movies()
-    {
-
+    public void setFavored(boolean favored) {
+        this.favored = favored;
     }
+
+
 
     public void setId(int id) {
         this.id = id;
@@ -39,6 +40,7 @@ public class Movies implements Parcelable {
     public void setOriginal_language(String original_language) {
         this.original_language = original_language;
     }
+
 
     public void setOriginal_title(String original_title) {
         this.original_title = original_title;
@@ -68,8 +70,8 @@ public class Movies implements Parcelable {
         this.generids = generids;
     }
 
-    public void setBackdrop(String backdrop) {
-        this.backdrop = backdrop;
+    public void setbackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
     }
 
     public void setVideo(boolean video) {
@@ -108,8 +110,8 @@ public class Movies implements Parcelable {
         return release_date;
     }
 
-    public String getBackdrop() {
-        return backdrop;
+    public String getBackdrop_path() {
+        return backdrop_path;
     }
 
     public int getFavourtite() {
@@ -145,13 +147,14 @@ public class Movies implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.release_date);
 
-        dest.writeString(this.backdrop);
+        dest.writeString(this.backdrop_path);
 
         dest.writeInt(this.favourite);
         dest.writeInt(this.id);
         dest.writeInt(this.vote_count);
         dest.writeFloat(this.vote_average);
         dest.writeFloat(this.popularity);
+
 
     }
 
@@ -163,7 +166,7 @@ public class Movies implements Parcelable {
         this.generids = in.readString();
         this.title = in.readString();
         this.release_date = in.readString();
-        this.backdrop = in.readString();
+        this.backdrop_path = in.readString();
 
         this.favourite = in.readInt();
         this.id = in.readInt();

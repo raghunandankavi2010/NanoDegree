@@ -12,4 +12,7 @@
     <dimen name="spinner_left_padding">0dp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="spacing">4dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="detail_backdrop_height">256dp</dimen>
 </resources>

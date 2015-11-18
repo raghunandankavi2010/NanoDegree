@@ -24,10 +24,10 @@ import rx.subscriptions.CompositeSubscription;
  * Created by Raghunandan on 15-11-2015.
  */
 public class PopulatMoviesFrament extends Fragment {
-
     private static final String STATE_MOVIES = "state_movies";
     private static final String REQUEST_PEDNING = "request_pending";
     private static final String ERROR = "error";
+    private static final String LOAD_MORE = "error";
     private ProgressBar mProgress;
     private View mErrorText;
     private int pageCount = 1, totalcount;
@@ -46,6 +46,7 @@ public class PopulatMoviesFrament extends Fragment {
         if (mLoadMore == true) {
             mAdapter.remove();
         }
+
         mSubscriptions.unsubscribe();
     }
 
@@ -58,8 +59,10 @@ public class PopulatMoviesFrament extends Fragment {
         mErrorText = root.findViewById(R.id.list_empty);
         mRecyclerView = (EmptyRecyclerView) root.findViewById(R.id.recyclerView);
 
+
         mAdapter = new ImageGridAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        //mRecyclerView.addItemDecoration(new MarginItemDecoration(getActivity()));
 
         mGridLayoutManager = (GridLayoutManager) mRecyclerView.getLayoutManager();
         mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -88,9 +91,8 @@ public class PopulatMoviesFrament extends Fragment {
 
                 if (totalcount != totalItemCount) {
 
-
                     mSubscriptions.add(
-                            mModel.getMoviesList("popularityity.desc.desc", pageCount)
+                            mModel.getMoviesList("popularity.desc", pageCount)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new MoviesListSubscriber()));
                     mLoadMore = true;
@@ -114,7 +116,7 @@ public class PopulatMoviesFrament extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            pageCount = savedInstanceState.getInt("count");
+
             boolean bool = savedInstanceState.getBoolean(REQUEST_PEDNING, false);
             if (bool) {
 
@@ -128,6 +130,7 @@ public class PopulatMoviesFrament extends Fragment {
                     //Toast.makeText(getActivity(), "Continuing Subscription", Toast.LENGTH_SHORT).show();
                 }
             } else if (savedInstanceState.containsKey(STATE_MOVIES)) {
+
                 //Toast.makeText(getActivity(), "List restored", Toast.LENGTH_SHORT).show();
                 ArrayList<Movies> list = savedInstanceState.getParcelableArrayList(STATE_MOVIES);
                 mAdapter.addPosts(list);
@@ -160,8 +163,10 @@ public class PopulatMoviesFrament extends Fragment {
         }
         outState.putBoolean(REQUEST_PEDNING, mRequestPending);
         outState.putBoolean(ERROR, mError);
-        outState.putInt("count", pageCount);
+        //outState.putBoolean(LOAD_MORE, mLoadMore);
+
     }
+
 
     private class MoviesListSubscriber extends Subscriber<ArrayList<Movies>> {
 
@@ -170,11 +175,8 @@ public class PopulatMoviesFrament extends Fragment {
 
             totalcount = mModel.getTotal_pages();
             if (mLoadMore == true) {
-                //Toast.makeText(getActivity(), "Load More removed", Toast.LENGTH_SHORT).show();
                 mAdapter.remove();
-                mLoadMore=false;
-
-
+                mLoadMore = false;
             }
             mRequestPending = false;
             mProgress.setVisibility(View.INVISIBLE);
@@ -195,8 +197,8 @@ public class PopulatMoviesFrament extends Fragment {
 
             if (mLoadMore == true) {
                 mAdapter.remove();
+                mLoadMore =false;
                 mErrorText.setVisibility(View.INVISIBLE);
-                mLoadMore=false;
             } else {
                 mProgress.setVisibility(View.INVISIBLE);
                 mErrorText.setVisibility(View.VISIBLE);

@@ -1,5 +1,6 @@
 package raghu.spotifystreamer.app.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -118,18 +119,18 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onClick(View view) {
-            int pos = getLayoutPosition();
-            Toast.makeText(view.getContext(),mList.get(pos).getTitle(),Toast.LENGTH_SHORT).show();
+            //int pos = getLayoutPosition();
+            //Toast.makeText(view.getContext(),mList.get(pos).getTitle(),Toast.LENGTH_SHORT).show();
            /* if(view.getId()==R.id.card_view)
             {
 
             }*/
 
-           /* int pos = getAdapterPosition();
+            int pos = getAdapterPosition();
             Movies movie = mList.get(pos);
-            Intent intent =  new Intent(view.getContext(),DetailsActivity.class);
+            Intent intent =  new Intent(view.getContext(),DetailActivity.class);
             intent.putExtra("movie",movie);
-            view.getContext().startActivity(intent);*/
+            view.getContext().startActivity(intent);
         }
     }
 
