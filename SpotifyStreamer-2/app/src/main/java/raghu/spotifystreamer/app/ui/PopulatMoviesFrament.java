@@ -82,7 +82,7 @@ public class PopulatMoviesFrament extends Fragment {
 
         mModel = ((RxApp) getActivity().getApplication()).component().spotifyMoviesModel();
 
-        mRecyclerView.addOnScrollListener(new EndlessScrollListener() {
+        mRecyclerView.addOnScrollListener(new EndlessScrollListener(pageCount) {
             @Override
             public void onLoadMore(int current_page, int totalItemCount) {
                 //add progress item
@@ -117,6 +117,7 @@ public class PopulatMoviesFrament extends Fragment {
 
         if (savedInstanceState != null) {
 
+            pageCount = savedInstanceState.getInt("count");
             boolean bool = savedInstanceState.getBoolean(REQUEST_PEDNING, false);
             if (bool) {
 
@@ -163,6 +164,7 @@ public class PopulatMoviesFrament extends Fragment {
         }
         outState.putBoolean(REQUEST_PEDNING, mRequestPending);
         outState.putBoolean(ERROR, mError);
+        outState.putInt("count", pageCount);
         //outState.putBoolean(LOAD_MORE, mLoadMore);
 
     }

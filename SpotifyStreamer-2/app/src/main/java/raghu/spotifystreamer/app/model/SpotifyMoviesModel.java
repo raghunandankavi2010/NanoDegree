@@ -1,5 +1,7 @@
 package raghu.spotifystreamer.app.model;
 
+import android.util.Log;
+
 import raghu.spotifystreamer.app.network.ReviewsApi;
 import raghu.spotifystreamer.app.network.SpotifyMoviesApi;
 
@@ -20,7 +22,7 @@ public class SpotifyMoviesModel {
 
     private final SpotifyMoviesApi mApi;
     private final ReviewsApi mRApi;
-    private int total_pages;
+    private static int total_pages;
 
     private Observable<ArrayList<Movies>> mList;
     private Observable<ArrayList<Reviews>> mReviews;
@@ -55,9 +57,10 @@ public class SpotifyMoviesModel {
                             total_pages = resp.body().getTotal_pages();
                             ArrayList<Movies> list = resp.body().getResults();
 
-                           /* for (Movies movie : list) {
+                            Log.i("SpotifyMoviesModel", "................");
+                           for (Movies movie : list) {
                                 Log.i("SpotifyMoviesModel", "" + movie.getTitle());
-                            }*/
+                            }
                             subscriber.onNext(list);
 
                         } catch (Exception e) {
@@ -96,7 +99,7 @@ public class SpotifyMoviesModel {
                         // Get result Repo from response.body()
 
                         try {
-                            total_pages = resp.body().getTotal_pages();
+                            //total_pages = resp.body().getTotal_pages();
                             ArrayList<Reviews> reviewslist = resp.body().getReviewsResults();
 
 

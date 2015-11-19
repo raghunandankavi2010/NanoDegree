@@ -18,8 +18,9 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
 
     private GridLayoutManager mLinearLayoutManager;
 
-    public EndlessScrollListener() {
+    public EndlessScrollListener(int current_page) {
 
+        this.current_page = current_page;
     }
 
     @Override

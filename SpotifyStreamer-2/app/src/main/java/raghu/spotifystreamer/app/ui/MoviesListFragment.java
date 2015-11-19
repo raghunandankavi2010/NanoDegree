@@ -32,10 +32,10 @@ public class MoviesListFragment extends Fragment {
     private static final String LOAD_MORE = "error";
     private ProgressBar mProgress;
     private View mErrorText;
-    private int pageCount = 1, totalcount;
+    private int totalcount=1000,pageCount=1;
 
     private EmptyRecyclerView mRecyclerView;
-    private boolean mRequestPending, mError, mLoadMore;
+    private boolean mRequestPending, mError, mLoadMore,check;
     private ImageGridAdapter mAdapter;
     private CompositeSubscription mSubscriptions = new CompositeSubscription();
     private SpotifyMoviesModel mModel;
@@ -84,25 +84,7 @@ public class MoviesListFragment extends Fragment {
 
         mModel = ((RxApp) getActivity().getApplication()).component().spotifyMoviesModel();
 
-        mRecyclerView.addOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public void onLoadMore(int current_page, int totalItemCount) {
-                //add progress item
-                Log.i("Count is", "" + current_page);
-                pageCount = current_page;
 
-                if (totalcount != totalItemCount) {
-
-                    mSubscriptions.add(
-                            mModel.getMoviesList("vote_average.desc", pageCount)
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new MoviesListSubscriber()));
-                    mLoadMore = true;
-                    mAdapter.add(null);
-                }
-
-            }
-        });
         return root;
     }
 
@@ -117,7 +99,9 @@ public class MoviesListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
+            pageCount = savedInstanceState.getInt("count");
 
             boolean bool = savedInstanceState.getBoolean(REQUEST_PEDNING, false);
             if (bool) {
@@ -143,6 +127,26 @@ public class MoviesListFragment extends Fragment {
         } else {
             fetchData();
         }
+
+        mRecyclerView.addOnScrollListener(new EndlessScrollListener(pageCount) {
+            @Override
+            public void onLoadMore(int current_page, int totalItemCount) {
+
+                Log.i("Count",""+current_page);
+                pageCount = current_page;
+
+                if (totalcount != totalItemCount) {
+
+                    mSubscriptions.add(
+                            mModel.getMoviesList("vote_average.desc", current_page)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new MoviesListSubscriber()));
+                    mLoadMore = true;
+                    mAdapter.add(null);
+                }
+
+            }
+        });
     }
 
     private void fetchData() {
@@ -152,7 +156,7 @@ public class MoviesListFragment extends Fragment {
         mErrorText.setVisibility(View.INVISIBLE);
 
         mSubscriptions.add(
-                mModel.getMoviesList("vote_average.desc", pageCount)
+                mModel.getMoviesList("vote_average.desc", 1)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new MoviesListSubscriber()));
     }
@@ -165,6 +169,7 @@ public class MoviesListFragment extends Fragment {
         }
         outState.putBoolean(REQUEST_PEDNING, mRequestPending);
         outState.putBoolean(ERROR, mError);
+        outState.putInt("count", pageCount);
 
 
         //outState.putBoolean(LOAD_MORE, mLoadMore);
@@ -185,6 +190,11 @@ public class MoviesListFragment extends Fragment {
             mRequestPending = false;
             mProgress.setVisibility(View.INVISIBLE);
             mAdapter.addPosts(movies);
+            Log.i("MoviesListFragment", ".............");
+            for(Movies m :movies)
+            {
+                Log.i("MoviesListFragment",m.getTitle());
+            }
 
         }
 
