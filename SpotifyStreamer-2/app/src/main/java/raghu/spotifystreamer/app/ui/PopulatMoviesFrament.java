@@ -27,7 +27,7 @@ public class PopulatMoviesFrament extends Fragment {
     private static final String STATE_MOVIES = "state_movies";
     private static final String REQUEST_PEDNING = "request_pending";
     private static final String ERROR = "error";
-    private static final String LOAD_MORE = "error";
+
     private ProgressBar mProgress;
     private View mErrorText;
     private int pageCount = 1, totalcount;
@@ -82,25 +82,7 @@ public class PopulatMoviesFrament extends Fragment {
 
         mModel = ((RxApp) getActivity().getApplication()).component().spotifyMoviesModel();
 
-        mRecyclerView.addOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public void onLoadMore(int current_page, int totalItemCount) {
-                //add progress item
-                Log.i("Count is", "" + current_page);
-                pageCount = current_page;
 
-                if (totalcount != totalItemCount) {
-
-                    mSubscriptions.add(
-                            mModel.getMoviesList("popularity.desc", pageCount)
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new MoviesListSubscriber()));
-                    mLoadMore = true;
-                    mAdapter.add(null);
-                }
-
-            }
-        });
         return root;
     }
 
@@ -117,6 +99,7 @@ public class PopulatMoviesFrament extends Fragment {
 
         if (savedInstanceState != null) {
 
+            pageCount = savedInstanceState.getInt("count");
             boolean bool = savedInstanceState.getBoolean(REQUEST_PEDNING, false);
             if (bool) {
 
@@ -141,6 +124,26 @@ public class PopulatMoviesFrament extends Fragment {
         } else {
             fetchData();
         }
+
+        mRecyclerView.addOnScrollListener(new EndlessScrollListener(pageCount) {
+            @Override
+            public void onLoadMore(int current_page, int totalItemCount) {
+                //add progress item
+                Log.i("Count is", "" + current_page);
+                pageCount = current_page;
+
+                if (totalcount != totalItemCount) {
+
+                    mSubscriptions.add(
+                            mModel.getMoviesList("popularity.desc", pageCount)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new MoviesListSubscriber()));
+                    mLoadMore = true;
+                    mAdapter.add(null);
+                }
+
+            }
+        });
     }
 
     private void fetchData() {
@@ -163,6 +166,7 @@ public class PopulatMoviesFrament extends Fragment {
         }
         outState.putBoolean(REQUEST_PEDNING, mRequestPending);
         outState.putBoolean(ERROR, mError);
+        outState.putInt("count", pageCount);
         //outState.putBoolean(LOAD_MORE, mLoadMore);
 
     }

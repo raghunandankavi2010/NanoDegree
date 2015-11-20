@@ -15,4 +15,9 @@
     <dimen name="card_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="detail_backdrop_height">256dp</dimen>
+    <dimen name="keyline_1">16dp</dimen>
+    <dimen name="keyline_2">72dp</dimen>
+
+    <item name="movie_item_image_aspect_ratio" format="float" type="dimen">.675</item>
+
 </resources>

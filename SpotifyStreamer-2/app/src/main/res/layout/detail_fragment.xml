@@ -23,10 +23,8 @@
             <raghu.spotifystreamer.app.ui.AspectLockedImageView
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@color/primaryColor"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"/>
+                android:layout_height="210dp"
+                />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/details"
@@ -37,9 +35,7 @@
                 <RelativeLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
 
                     <TextView
@@ -52,7 +48,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="Ratings :"/>
+                        />
 
                     <TextView
                         android:id="@+id/release"
@@ -73,6 +69,19 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:tint="@color/primaryColor"/>
+
+
+                    <TextView
+                        android:layout_marginRight="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description :"
+                        android:id="@+id/content"
+                        android:layout_below="@+id/release"
+                        android:layout_alignLeft="@+id/release"
+                        android:layout_alignStart="@+id/release"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -96,6 +105,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
                     <TextView
+                        android:layout_marginRight="10dp"
                         android:id="@+id/reviewstext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -114,24 +124,18 @@
                 android:layout_marginRight="@dimen/card_margin">
 
                 <LinearLayout
+                    android:id="@+id/containerv"
+                    android:orientation="vertical"
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Trailers"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        />
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
+
+
 </RelativeLayout>

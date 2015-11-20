@@ -1,5 +1,7 @@
 package raghu.spotifystreamer.app.model;
 
+import android.util.Log;
+
 import raghu.spotifystreamer.app.network.ReviewsApi;
 import raghu.spotifystreamer.app.network.SpotifyMoviesApi;
 
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import raghu.spotifystreamer.app.network.SpotifyMoviesApi;
+import raghu.spotifystreamer.app.network.VideosApi;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -20,15 +23,19 @@ public class SpotifyMoviesModel {
 
     private final SpotifyMoviesApi mApi;
     private final ReviewsApi mRApi;
-    private int total_pages;
+    private final VideosApi mVApi;
+    private static int total_pages;
 
     private Observable<ArrayList<Movies>> mList;
     private Observable<ArrayList<Reviews>> mReviews;
+    private Observable<ArrayList<Videos>> mVidoes;
+
 
     @Inject
-    public SpotifyMoviesModel(SpotifyMoviesApi api,ReviewsApi mRapi) {
-        mApi = api;
-        mRApi = mRapi;
+    public SpotifyMoviesModel(SpotifyMoviesApi api,ReviewsApi mRapi,VideosApi mVApi) {
+        this.mApi = api;
+        this.mRApi = mRapi;
+       this.mVApi = mVApi;
     }
 
 
@@ -54,11 +61,14 @@ public class SpotifyMoviesModel {
                         try {
                             total_pages = resp.body().getTotal_pages();
                             ArrayList<Movies> list = resp.body().getResults();
-
-                           /* for (Movies movie : list) {
+                            /*Log.i("SpotifyMoviesModel", "................");
+                           for (Movies movie : list) {
                                 Log.i("SpotifyMoviesModel", "" + movie.getTitle());
                             }*/
+                            if(list.size()>0)
                             subscriber.onNext(list);
+                            else
+                            subscriber.onError(new Throwable("Empty List"));
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -96,11 +106,13 @@ public class SpotifyMoviesModel {
                         // Get result Repo from response.body()
 
                         try {
-                            total_pages = resp.body().getTotal_pages();
+                            //total_pages = resp.body().getTotal_pages();
                             ArrayList<Reviews> reviewslist = resp.body().getReviewsResults();
-
-
-                            subscriber.onNext(reviewslist);
+                            if(reviewslist.size()>0) {
+                                subscriber.onNext(reviewslist);
+                            }else {
+                                subscriber.onError(new Throwable("Empty List"));
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -119,32 +131,34 @@ public class SpotifyMoviesModel {
         return mReviews;
     }
 
-   /* public Observable<ArrayList<Reviews>> getVideoRequest() {
-        return mReviews;
+    public Observable<ArrayList<Videos>> getVideoRequest() {
+        return mVidoes;
     }
 
-    public Observable<ArrayList<Reviews>> getVideoList(final int id, final int pagecount) {
+    public Observable<ArrayList<Videos>> getVideoList(final int movieId) {
 
 
-        mReviews = Observable.create(new Observable.OnSubscribe<ArrayList<Reviews>>() {
+        mVidoes = Observable.create(new Observable.OnSubscribe<ArrayList<Videos>>() {
             @Override
-            public void call(final Subscriber<? super ArrayList<Reviews>> subscriber) {
+            public void call(final Subscriber<? super ArrayList<Videos>> subscriber) {
 
 
-                Call<ReviewsList> response = mApi.reviews(id, pagecount);
-                response.enqueue(new Callback<ReviewsList>() {
+                Call<VideoList> response = mVApi.videos(movieId);
+                response.enqueue(new Callback<VideoList>() {
                     @Override
-                    public void onResponse(Response<ReviewsList> resp) {
+                    public void onResponse(Response<VideoList> resp) {
                         // Get result Repo from response.body()
 
                         try {
-                            total_pages = resp.body().getTotal_pages();
-                            ArrayList<Reviews> reviewslist = resp.body().getReviewsResults();
 
-                           *//* for (Movies movie : list) {
-                                Log.i("SpotifyMoviesModel", "" + movie.getTitle());
-                            }*//*
-                            subscriber.onNext(reviewslist);
+                            ArrayList<Videos> videolist = resp.body().getResults();
+                            if(videolist.size()>0) {
+                             subscriber.onNext(videolist);
+                            }
+                            else
+                            {
+                                subscriber.onError(new Throwable("Empty List"));
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -160,8 +174,8 @@ public class SpotifyMoviesModel {
             }
         });
 
-        return mReviews;
-    }*/
+        return mVidoes;
+    }
 
     public int getTotal_pages() {
         return total_pages;
