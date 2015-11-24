@@ -146,6 +146,9 @@ public class DetailFragment extends Fragment {
                ratings.append("\n");
                ratings.append("Ratings :" + String.valueOf(movie.getVote_avarage()));
                release.append(movie.getRelease_date());
+               release.append("\n");
+
+               release.append("Vote Average :"+String.valueOf(movie.getVote_count()));
 
                if (!TextUtils.isEmpty(movie.getOverview()))
                    content.append(movie.getOverview());
