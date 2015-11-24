@@ -80,7 +80,6 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
         if(mAdapter!=null)
         mAdapter.swapCursor(data);
     }

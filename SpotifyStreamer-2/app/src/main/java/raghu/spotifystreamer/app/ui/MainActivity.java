@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
         spinnerAdapter.addItem("Movies List");
         spinnerAdapter.addItem("Popular Movies");
         spinnerAdapter.addItem("Favorite Movies");
+        spinnerAdapter.addItem("Most Rated");
 
 
         mSpinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
@@ -93,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
         }else if(identifier==3){
             identifier=-1;
             mSpinner.setSelection(2);
+
+        } else if(identifier==4){
+            identifier=-1;
+            mSpinner.setSelection(3);
 
         }
 
@@ -118,6 +123,12 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
                         if (identifier != 3) {
                             replaceMoviesFragment(new FavouriteFragment());
                             identifier = 3;
+                        }
+                        break;
+                    case 3:
+                        if (identifier != 4) {
+                            replaceMoviesFragment(new VoteCountFragment());
+                            identifier = 4;
                         }
 
                         break;
