@@ -7,9 +7,8 @@ Libraries used in this example:
  
  
  
-You will need api key from the spotify web site to access the api which is needed for querying.
+You will need api key from the spotify web site to access the api.
 
-You will need api key from the spotify web site to access the api. This api needs to be added in FragmentNetworkRequest for the URL. 
 
 Your Api key in ReviewsApi.java
 
