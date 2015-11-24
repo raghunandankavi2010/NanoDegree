@@ -12,11 +12,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -27,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -61,8 +68,9 @@ public class DetailFragment extends Fragment {
     private TextView ratings, release,content;
     private ImageView mImage;
     private SpotifyMoviesModel mModel;
-    private CardView review_cardView;
+    private CardView review_cardView,trailers_cardView;
     private LinearLayout cont;
+    private MenuItem mMenuItemShare;
 
 
     private CompositeSubscription mSubscriptions = new CompositeSubscription();
@@ -88,6 +96,7 @@ public class DetailFragment extends Fragment {
     private ArrayList<Videos> mVideos = new ArrayList<>();
 
     private boolean mError;
+    private String firstTrailer;
 
 
     public DetailFragment() {
@@ -102,6 +111,12 @@ public class DetailFragment extends Fragment {
         mSubscriptions.unsubscribe();
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,6 +125,7 @@ public class DetailFragment extends Fragment {
         mModel = ((RxApp) getActivity().getApplication()).component().spotifyMoviesModel();
         fab = (ImageButton) view.findViewById(R.id.imageButton);
         review_cardView = (CardView) view.findViewById(R.id.reviews);
+        trailers_cardView = (CardView) view.findViewById(R.id.trailers);
         cont = (LinearLayout)view.findViewById(R.id.containerv);
         ratings = (TextView) view.findViewById(R.id.ratings);
         release = (TextView) view.findViewById(R.id.release);
@@ -197,7 +213,7 @@ public class DetailFragment extends Fragment {
                     //Toast.makeText(getActivity(), "Continuing Subscription", Toast.LENGTH_SHORT).show();
                 }
             } else if (savedInstanceState.containsKey(STATE_TRAILERS)) {
-
+                trailers_cardView.setVisibility(View.VISIBLE);
                 //Toast.makeText(getActivity(), "List restored", Toast.LENGTH_SHORT).show();
                 ArrayList<Videos> list = savedInstanceState.getParcelableArrayList(STATE_TRAILERS);
                 //Toast.makeText(getActivity(), "List restored"+list.size(), Toast.LENGTH_SHORT).show();
@@ -238,7 +254,7 @@ public class DetailFragment extends Fragment {
                     //Toast.makeText(getActivity(), "Continuing Subscription", Toast.LENGTH_SHORT).show();
                 }
             } else if (savedInstanceState.containsKey(STATE_REVIEWS)) {
-
+                review_cardView.setVisibility(View.VISIBLE);
                 //Toast.makeText(getActivity(), "List restored", Toast.LENGTH_SHORT).show();
                 ArrayList<Reviews> list = savedInstanceState.getParcelableArrayList(STATE_REVIEWS);
                 //Toast.makeText(getActivity(), "List restored"+list.size(), Toast.LENGTH_SHORT).show();
@@ -343,6 +359,7 @@ public class DetailFragment extends Fragment {
 
         @Override
         public void onNext(ArrayList<Reviews> reviews) {
+            review_cardView.setVisibility(View.VISIBLE);
             mRequestPending = false;
             totalcount = mModel.getTotal_pages();
             mList = reviews;
@@ -374,9 +391,12 @@ public class DetailFragment extends Fragment {
 
         @Override
         public void onNext(ArrayList<Videos> videos) {
-
+           trailers_cardView.setVisibility(View.VISIBLE);
             mRequestPendingV = false;
             mVideos = videos;
+            mMenuItemShare.setVisible(true);
+
+            firstTrailer = "http://www.youtube.com/watch?v="+videos.get(0).getKey();
             for (Videos video : videos) {
                 final View videoView = getActivity().getLayoutInflater().inflate(R.layout.item_video, cont, false);
                 final TextView videoNameView = (TextView) videoView.findViewById(R.id.video_name);
@@ -419,4 +439,40 @@ public class DetailFragment extends Fragment {
         else
             Log.i("DetailFragment","Cannot play video format");
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.detail_menu, menu);
+
+        mMenuItemShare= menu.findItem(R.id.menu_item_share);
+        mMenuItemShare.setVisible(false);
+
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.menu_item_share :
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, firstTrailer);
+                    sendIntent.setType("text/plain");
+                    // Verify the original intent will resolve to at least one activity
+                    if (sendIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        getActivity().startActivity(sendIntent);
+                    }
+
+
+                return true;
+        }
+        return false;
+    }
+
+
+
 }
