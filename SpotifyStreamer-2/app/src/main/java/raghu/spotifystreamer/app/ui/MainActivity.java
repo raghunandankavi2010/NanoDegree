@@ -172,9 +172,14 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
         }
         else
         {
-            Intent intent =  new Intent(this,DetailActivity.class);
-            intent.putExtra("movie",movie);
-            startActivity(intent);
+            if(check.equals("Yes")) {
+                Intent intent = new Intent(this, DetailActivity.class);
+                intent.putExtra("movie", movie);
+                startActivity(intent);
+            } else if(check.equals("No"))
+            {
+                // do nothing
+            }
         }
     }
 

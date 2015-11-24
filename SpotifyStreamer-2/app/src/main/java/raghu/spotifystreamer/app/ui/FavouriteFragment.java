@@ -55,20 +55,20 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
         mErrorText = (TextView) root.findViewById(R.id.list_empty);
         mRecyclerView = (EmptyRecyclerView) root.findViewById(R.id.recyclerView);
 
-        mAdapter = new ImageCursorAdapter(getActivity(),this,mCursor);
-        mRecyclerView.setAdapter(mAdapter);
+
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mAdapter = new ImageCursorAdapter(getActivity(),this,mCursor);
+        mRecyclerView.setAdapter(mAdapter);
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
         String[] selectionArgs = { String.valueOf(1) };
         return new CursorLoader(getActivity(),  // Context
                 MoviesContract.Movies.CONTENT_URI, // URI
@@ -76,14 +76,13 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
                 "movie_favored=?",                           // Selection
                 selectionArgs,                           // Selection args
                 null); // Sort
-
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        mCursor = data;
-        mAdapter.swapCursor(mCursor);
+        if(mAdapter!=null)
+        mAdapter.swapCursor(data);
     }
 
     @Override

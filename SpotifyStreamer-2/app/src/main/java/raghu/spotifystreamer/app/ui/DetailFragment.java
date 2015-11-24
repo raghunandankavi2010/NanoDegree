@@ -125,17 +125,17 @@ public class DetailFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+           if(movie!=null) {
+               ratings.append("Movie Name" + movie.getTitle());
+               ratings.append("\n");
+               ratings.append("Ratings :" + String.valueOf(movie.getVote_avarage()));
+               release.append(movie.getRelease_date());
 
-
-        ratings.append("Movie Name"+movie.getTitle());
-        ratings.append("\n");
-        ratings.append("Ratings :"+String.valueOf(movie.getVote_avarage()));
-        release.append(movie.getRelease_date());
-
-        if(!TextUtils.isEmpty(movie.getOverview()))
-        content.append(movie.getOverview());
-        else
-        content.setVisibility(View.GONE);
+               if (!TextUtils.isEmpty(movie.getOverview()))
+                   content.append(movie.getOverview());
+               else
+                   content.setVisibility(View.GONE);
+           }
 
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
