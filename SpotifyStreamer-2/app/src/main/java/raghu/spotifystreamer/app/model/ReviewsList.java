@@ -9,6 +9,8 @@ public class ReviewsList {
 
     private int total_pages;
 
+    private int id;
+
     public int getTotal_pages() {
         return total_pages;
     }
@@ -17,5 +19,9 @@ public class ReviewsList {
 
     public ArrayList<Reviews> getReviewsResults() {
         return results;
+    }
+
+    public int getId() {
+        return id;
     }
 }

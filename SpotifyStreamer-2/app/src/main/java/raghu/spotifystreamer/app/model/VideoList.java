@@ -8,9 +8,15 @@ import java.util.ArrayList;
 public class VideoList {
 
 
+    private int id;
+
     private ArrayList<Videos> results;
 
     public ArrayList<Videos> getResults() {
         return results;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -263,11 +263,15 @@ public class DetailFragment extends Fragment {
                 //Toast.makeText(getActivity(), "List restored"+list.size(), Toast.LENGTH_SHORT).show();
                 mList = list;
 
-                //Toast.makeText(getActivity(), "List restored" + list.size(), Toast.LENGTH_SHORT).show();
-                review.append(mList.get(0).getAuthor());
-                review.append("\n");
-                review.append(mList.get(0).getContent());
-                review.append("\n");
+                for(Reviews reviews1:mList) {
+                    review.append("Author :" + reviews1.getAuthor());
+                    review.append("\n");
+                    review.append("Content :" + reviews1.getContent());
+                    review.append("\n");
+                    review.append("\n");
+                }
+
+
 
             } else {
                 //Toast.makeText(getActivity(), "Something Wrong", Toast.LENGTH_SHORT).show();
@@ -306,6 +310,7 @@ public class DetailFragment extends Fragment {
             contentValues.put(MoviesContract.Movies.MOVIE_RELEASE_DATE, movie.getRelease_date());
             contentValues.put(MoviesContract.Movies.MOVIE_FAVORED, 1);
             contentResolver.insert(uri, contentValues);
+            if(mList.size()>0)
             movie.setFavourite(1);
             //fab.setImageDrawable(getImage(R.drawable.ic_favorite_full));
         } else if (val == 0) {
@@ -366,11 +371,13 @@ public class DetailFragment extends Fragment {
             mRequestPending = false;
             totalcount = mModel.getTotal_pages();
             mList = reviews;
-
-            review.append("Author :" + mList.get(0).getAuthor());
-            review.append("\n");
-            review.append("Content :" + mList.get(0).getContent());
-            review.append("\n");
+            for(Reviews reviews1:reviews) {
+                review.append("Author :" + reviews1.getAuthor());
+                review.append("\n");
+                review.append("Content :" + reviews1.getContent());
+                review.append("\n");
+                review.append("\n");
+            }
 
         }
 

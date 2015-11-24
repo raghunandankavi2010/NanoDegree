@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.1.1\jars\classes.jar"
+        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.1.1\jars\libs\internal_impl-23.1.1.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-e2f5b909a6fc098cac05a3fb3b59cd56694843f9.jar" />
+        sha1="f4d7a07120e76988f3a15403838d323c2400db83">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1-166e39e053a4600c47c9a637b9f62ec8e69f7c23.jar" />
     </item>
     <item
         jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
@@ -16,74 +16,11 @@
         <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-a9b054990627aaeb0470302a4f5aeca7906c1073.jar" />
     </item>
     <item
-        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-51e2c48fa6374339824c387f155d2df7efac5fb1.jar" />
-    </item>
-    <item
         jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit\adapter-rxjava\2.0.0-beta1\27db6ccd014c866500af30d92fbfad0e3cc99ee8\adapter-rxjava-2.0.0-beta1.jar"
         jumboMode="false"
         revision="23.0.2"
         sha1="27db6ccd014c866500af30d92fbfad0e3cc99ee8">
         <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\adapter-rxjava-2.0.0-beta1-1e3a66ba3b37e583707b958f99772e10ef9940af.jar" />
-    </item>
-    <item
-        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.1.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="5ddf5f4817565c9db82613c16093f76640a54e15">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-609cf3650612e9a0d03bc88426feba627b2f96ed.jar" />
-    </item>
-    <item
-        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.1.1\jars\libs\internal_impl-23.1.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="f4d7a07120e76988f3a15403838d323c2400db83">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1-166e39e053a4600c47c9a637b9f62ec8e69f7c23.jar" />
-    </item>
-    <item
-        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.0.14\898f9ab61e2a23afd615f0b0389478bec86f49f9\rxjava-1.0.14.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="898f9ab61e2a23afd615f0b0389478bec86f49f9">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\rxjava-1.0.14-a895636c2a9bd391847504f0722e320361a91d8f.jar" />
-    </item>
-    <item
-        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.google.dagger\dagger\2.0.1\1261dfca5bae89a866a2855552da26feab7f8fad\dagger-2.0.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="1261dfca5bae89a866a2855552da26feab7f8fad">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\dagger-2.0.1-58513bac6854dfcae09dc4747d0afab453bae722.jar" />
-    </item>
-    <item
-        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit\retrofit\2.0.0-beta1\53b5be42d6cf719ac1431b9aa9a4d5ab78856148\retrofit-2.0.0-beta1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="53b5be42d6cf719ac1431b9aa9a4d5ab78856148">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\retrofit-2.0.0-beta1-279f2e4315934b07673fabd054ce7f53a036d6e7.jar" />
-    </item>
-    <item
-        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1-84feb7484eeddb768651aeb752a61a25ba4930f9.jar" />
-    </item>
-    <item
-        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.5.0\4de2b4ed3445c37ec1720a7d214712e845a24636\okhttp-2.5.0.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\okhttp-2.5.0-d93db9e814f478df39798451590d75e326f7640f.jar" />
-    </item>
-    <item
-        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="6975da39a7040257bd51d21a231b76c915872d38">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\javax.inject-1-b7bede90843a5549186d8028e4f233a9389b1782.jar" />
     </item>
     <item
         jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit\converter-gson\2.0.0-beta1\3de922cdbf9bb3a6f72f6b6b3327cfb348cf445a\converter-gson-2.0.0-beta1.jar"
@@ -93,11 +30,18 @@
         <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\converter-gson-2.0.0-beta1-b3883758f34bb6c8677b380c5e8326b2d49436e0.jar" />
     </item>
     <item
-        jar="E:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
+        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.1.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1-aa5c5cff6a92560fa20d72dfd632fd3c7d00957e.jar" />
+        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-e2f5b909a6fc098cac05a3fb3b59cd56694843f9.jar" />
+    </item>
+    <item
+        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-51e2c48fa6374339824c387f155d2df7efac5fb1.jar" />
     </item>
     <item
         jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.1.1\jars\classes.jar"
@@ -107,11 +51,32 @@
         <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-e02c52b2b32fc5056842284d84d86984272c009e.jar" />
     </item>
     <item
+        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5ddf5f4817565c9db82613c16093f76640a54e15">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-609cf3650612e9a0d03bc88426feba627b2f96ed.jar" />
+    </item>
+    <item
         jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\design\23.1.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.2"
         sha1="379471b2bd17d9737c050345c08e8c7d16589784">
         <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\classes-3600db6de8fc5c32150dd135d24d041c3068d498.jar" />
+    </item>
+    <item
+        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.0.14\898f9ab61e2a23afd615f0b0389478bec86f49f9\rxjava-1.0.14.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="898f9ab61e2a23afd615f0b0389478bec86f49f9">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\rxjava-1.0.14-a895636c2a9bd391847504f0722e320361a91d8f.jar" />
+    </item>
+    <item
+        jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1-84feb7484eeddb768651aeb752a61a25ba4930f9.jar" />
     </item>
     <item
         jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3.1\ecb6e1f8e4b0e84c4b886c2f14a1500caf309757\gson-2.3.1.jar"
@@ -128,11 +93,25 @@
         <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\okio-1.6.0-dc4a0559f3a64b2e5b68a790220b236e447fba06.jar" />
     </item>
     <item
-        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit\retrofit\2.0.0-beta1\53b5be42d6cf719ac1431b9aa9a4d5ab78856148\retrofit-2.0.0-beta1.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
-        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\picasso-2.5.2-2e23f1e425a49a21ed07ba4a7e4712454e51dda4.jar" />
+        sha1="53b5be42d6cf719ac1431b9aa9a4d5ab78856148">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\retrofit-2.0.0-beta1-279f2e4315934b07673fabd054ce7f53a036d6e7.jar" />
+    </item>
+    <item
+        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.google.dagger\dagger\2.0.1\1261dfca5bae89a866a2855552da26feab7f8fad\dagger-2.0.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1261dfca5bae89a866a2855552da26feab7f8fad">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\dagger-2.0.1-58513bac6854dfcae09dc4747d0afab453bae722.jar" />
+    </item>
+    <item
+        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.5.0\4de2b4ed3445c37ec1720a7d214712e845a24636\okhttp-2.5.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\okhttp-2.5.0-d93db9e814f478df39798451590d75e326f7640f.jar" />
     </item>
     <item
         jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit\retrofit-mock\2.0.0-beta1\8bdce048752dcd3cca957c9cf749f7bf05bd3fa4\retrofit-mock-2.0.0-beta1.jar"
@@ -140,6 +119,27 @@
         revision="23.0.2"
         sha1="8bdce048752dcd3cca957c9cf749f7bf05bd3fa4">
         <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\retrofit-mock-2.0.0-beta1-27c702d967cd77e4fdf0efa7fbbfcbe53f9f52ff.jar" />
+    </item>
+    <item
+        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\javax.inject-1-b7bede90843a5549186d8028e4f233a9389b1782.jar" />
+    </item>
+    <item
+        jar="E:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1-aa5c5cff6a92560fa20d72dfd632fd3c7d00957e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Raghunandan\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\pre-dexed\debug\picasso-2.5.2-2e23f1e425a49a21ed07ba4a7e4712454e51dda4.jar" />
     </item>
     <item
         jar="E:\NanoDegree-master\SpotifyStreamer-2\app\build\intermediates\exploded-aar\io.reactivex\rxandroid\1.0.1\jars\classes.jar"

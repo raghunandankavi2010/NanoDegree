@@ -34,6 +34,7 @@ public class MoviesProvider extends ContentProvider {
     private static final int MOVIES_SORTED = 2;
     private static final int MOVIE_TYPE = 3;
     private static final int MOVIE_SORTED_TYPE = 4;
+    private static final int REVIEWS_MOVIES = 5;
 
     private MoviesDatabase mOpenHelper;
 
@@ -46,6 +47,7 @@ public class MoviesProvider extends ContentProvider {
 
         sUriMatcher.addURI(AUTHORITY, "movies", MOVIES);
         sUriMatcher.addURI(AUTHORITY, "movies/*", MOVIES_SORTED);
+
 
     }
 
