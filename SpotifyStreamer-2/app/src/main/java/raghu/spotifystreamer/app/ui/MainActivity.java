@@ -108,7 +108,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case 2:
-                        // replaceMoviesFragment(new M());
+                        if (identifier != 3) {
+                            replaceMoviesFragment(new FavouriteFragment());
+                            identifier = 3;
+                        }
+
                         break;
                 }
             }

@@ -39,6 +39,8 @@
 
 
                     <TextView
+                        android:layout_marginRight="5dp"
+                        android:text="ratings"
                         android:id="@+id/ratings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -48,9 +50,11 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        />
+                        android:layout_toLeftOf="@+id/imageButton"
+                        android:layout_toStartOf="@+id/imageButton"/>
 
                     <TextView
+                        android:layout_marginRight="5dp"
                         android:id="@+id/release"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -58,7 +62,9 @@
                         android:layout_alignStart="@+id/ratings"
                         android:layout_below="@+id/ratings"
                         android:layout_marginTop="10dp"
-                        android:text="Release :"/>
+                        android:text="Release :"
+                        android:layout_toLeftOf="@+id/imageButton"
+                        android:layout_toStartOf="@+id/imageButton"/>
 
                     <ImageButton
                         android:id="@+id/imageButton"

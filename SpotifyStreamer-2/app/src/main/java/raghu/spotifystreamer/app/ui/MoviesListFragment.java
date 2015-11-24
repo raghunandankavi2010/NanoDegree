@@ -32,11 +32,7 @@ public class MoviesListFragment extends Fragment {
 
     private ProgressBar mProgress;
     private View mErrorText;
-<<<<<<< HEAD
     private int totalcount,pageCount=1;
-=======
-    private int totalcount=1000,pageCount=1;
->>>>>>> 1b7c916485eb55c1a68a2e048fafa4d1778c6b38
 
     private EmptyRecyclerView mRecyclerView;
     private boolean mRequestPending, mError, mLoadMore,check;

@@ -15,6 +15,11 @@ public class Movies implements Parcelable {
     private String original_language,original_title,overview,release_date,poster_path,title,generids,backdrop_path;
     private boolean video,favored;
 
+    public Movies()
+    {
+
+    }
+
     public void setFavored(boolean favored) {
         this.favored = favored;
     }

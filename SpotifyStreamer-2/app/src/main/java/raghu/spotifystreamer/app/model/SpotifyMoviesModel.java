@@ -23,10 +23,7 @@ public class SpotifyMoviesModel {
 
     private final SpotifyMoviesApi mApi;
     private final ReviewsApi mRApi;
-<<<<<<< HEAD
     private final VideosApi mVApi;
-=======
->>>>>>> 1b7c916485eb55c1a68a2e048fafa4d1778c6b38
     private static int total_pages;
 
     private Observable<ArrayList<Movies>> mList;
@@ -64,19 +61,11 @@ public class SpotifyMoviesModel {
                         try {
                             total_pages = resp.body().getTotal_pages();
                             ArrayList<Movies> list = resp.body().getResults();
-<<<<<<< HEAD
                             /*Log.i("SpotifyMoviesModel", "................");
                            for (Movies movie : list) {
                                 Log.i("SpotifyMoviesModel", "" + movie.getTitle());
                             }*/
                             if(list.size()>0)
-=======
-
-                            Log.i("SpotifyMoviesModel", "................");
-                           for (Movies movie : list) {
-                                Log.i("SpotifyMoviesModel", "" + movie.getTitle());
-                            }
->>>>>>> 1b7c916485eb55c1a68a2e048fafa4d1778c6b38
                             subscriber.onNext(list);
                             else
                             subscriber.onError(new Throwable("Empty List"));
