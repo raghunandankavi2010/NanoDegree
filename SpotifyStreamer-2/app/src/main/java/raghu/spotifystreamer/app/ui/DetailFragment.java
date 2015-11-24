@@ -126,7 +126,7 @@ public class DetailFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
            if(movie!=null) {
-               ratings.append("Movie Name" + movie.getTitle());
+               ratings.append("Movie Name :" + movie.getTitle());
                ratings.append("\n");
                ratings.append("Ratings :" + String.valueOf(movie.getVote_avarage()));
                release.append(movie.getRelease_date());
@@ -375,7 +375,6 @@ public class DetailFragment extends Fragment {
         @Override
         public void onNext(ArrayList<Videos> videos) {
 
-            Toast.makeText(getActivity(),"Videos"+videos.size(),Toast.LENGTH_SHORT).show();
             mRequestPendingV = false;
             mVideos = videos;
             for (Videos video : videos) {

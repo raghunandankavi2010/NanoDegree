@@ -46,14 +46,10 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
         setContentView(R.layout.activity_main);
         mTwoPane = findViewById(R.id.fragment_container2) != null;
 
-        if(mTwoPane)
-        {
-          Toast.makeText(this,"Two Pane",Toast.LENGTH_SHORT).show();
-        }
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         identifier = sp.getInt("id", -1);
-        Toast.makeText(this,""+identifier,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,""+identifier,Toast.LENGTH_SHORT).show();
 
         toolbar = (Toolbar) this.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_drawer);
@@ -114,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
                         break;
                     case 1:
                         if (identifier != 2) {
-                            replaceMoviesFragment(new PopulatMoviesFrament());
+                            replaceMoviesFragment(new PopularMoviesFrament());
                             identifier = 2;
                         }
                         break;
