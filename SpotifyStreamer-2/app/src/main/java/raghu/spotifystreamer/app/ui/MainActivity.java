@@ -1,6 +1,7 @@
 package raghu.spotifystreamer.app.ui;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.preference.PreferenceManager;
@@ -25,13 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import raghu.spotifystreamer.app.R;
+import raghu.spotifystreamer.app.model.Movies;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMovieSelectionListener{
 
     private Toolbar toolbar;
     private SharedPreferences sp;
+    private boolean mTwoPane;
 
     private int identifier;
+    private static final String MOVIE_DETAILS_FRAGMENT_TAG = "fragment_movie_details";
 
 
     private Spinner mSpinner;
@@ -40,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mTwoPane = findViewById(R.id.fragment_container2) != null;
+
+        if(mTwoPane)
+        {
+          Toast.makeText(this,"Two Pane",Toast.LENGTH_SHORT).show();
+        }
+
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         identifier = sp.getInt("id", -1);
         Toast.makeText(this,""+identifier,Toast.LENGTH_SHORT).show();
@@ -127,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     private void replaceMoviesFragment(Fragment fragment) {
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container, fragment,MOVIE_DETAILS_FRAGMENT_TAG)
                 .commit();
     }
 
@@ -136,6 +147,35 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putInt("key", identifier);
 
+    }
+
+    @Override
+    public void onMovieSelected(Movies movie,String check) {
+        if(mTwoPane)
+        {
+
+            if(check.equals("Yes")) {
+                DetailFragment detailFragment = new DetailFragment();
+                Bundle args = new Bundle();
+                args.putParcelable("key", movie);
+                detailFragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container2, detailFragment,MOVIE_DETAILS_FRAGMENT_TAG)
+                        .commit();
+            }else if(check.equals("No"))
+            {
+                Fragment detailFragment =  getSupportFragmentManager().findFragmentByTag(MOVIE_DETAILS_FRAGMENT_TAG);
+                if(detailFragment!=null && detailFragment.isVisible())
+                getSupportFragmentManager().beginTransaction().remove(detailFragment).commit();
+
+            }
+        }
+        else
+        {
+            Intent intent =  new Intent(this,DetailActivity.class);
+            intent.putExtra("movie",movie);
+            startActivity(intent);
+        }
     }
 
     private class SpinnerAdapter extends BaseAdapter {

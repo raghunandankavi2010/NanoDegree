@@ -1,5 +1,7 @@
 package raghu.spotifystreamer.app.ui;
 
+import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 // Thanks to Chiuki Chan's AutoFitRecyclerView. I picked that square island blog post.
 public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    static OnMovieSelected onMovieSelected;
+
     private static ArrayList<Movies> mList;
 
 
@@ -34,7 +38,8 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public static final int VIEW_PROG = 0;
 
 
-    public ImageGridAdapter() {
+    public ImageGridAdapter(Fragment fragment) {
+        onMovieSelected =(OnMovieSelected)fragment;
         this.mList = new ArrayList<>();
     }
 
@@ -128,9 +133,11 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             int pos = getAdapterPosition();
             Movies movie = mList.get(pos);
-            Intent intent =  new Intent(view.getContext(),DetailActivity.class);
+            if(onMovieSelected!=null)
+                onMovieSelected.movieselected(movie);
+       /*     Intent intent =  new Intent(view.getContext(),DetailActivity.class);
             intent.putExtra("movie",movie);
-            view.getContext().startActivity(intent);
+            view.getContext().startActivity(intent);*/
         }
     }
 
@@ -153,5 +160,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             progressBar = (ProgressBar)v.findViewById(R.id.progressBar);
         }
     }
+
+
 
 }

@@ -1,5 +1,6 @@
 package raghu.spotifystreamer.app.ui;
 
+import android.support.v4.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,19 +29,13 @@ import raghu.spotifystreamer.app.provider.MoviesContract;
  */
 public class ImageCursorAdapter extends CursorRecyclerViewAdapter<ImageCursorAdapter.ViewHolder_item> {
 
-    public interface OnFavClickListener {
+    private OnMovieSelected onMovieSelected;
 
-        public void onFavClick(Cursor pos);
-    }
-
-    private Context mContext;
-    OnFavClickListener onFavClickListener;
-    private ContentResolver contentResolver;
-    private Cursor mCursor;
-    public ImageCursorAdapter(Context context, Cursor cursor) {
+    public ImageCursorAdapter(Context context, Fragment fragment, Cursor cursor) {
 
         super(context, cursor);
-        mContext = context;
+        onMovieSelected = (OnMovieSelected)fragment;
+
     }
 
 
@@ -102,9 +97,10 @@ public class ImageCursorAdapter extends CursorRecyclerViewAdapter<ImageCursorAda
             int pos = getLayoutPosition();
             Cursor cursor = getItem(pos);
 
-            Intent intent =  new Intent(view.getContext(),DetailActivity.class);
+            onMovieSelected.movieselected(getMovieFromCursor(cursor));
+            /*Intent intent =  new Intent(view.getContext(),DetailActivity.class);
             intent.putExtra("movie",getMovieFromCursor(cursor));
-            view.getContext().startActivity(intent);
+            view.getContext().startActivity(intent);*/
         }
 
     }

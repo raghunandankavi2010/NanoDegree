@@ -1,5 +1,6 @@
 package raghu.spotifystreamer.app.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,7 +26,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Raghunandan on 13-11-2015.
  */
-public class MoviesListFragment extends Fragment {
+public class MoviesListFragment extends Fragment implements OnMovieSelected {
     private static final String STATE_MOVIES = "state_movies";
     private static final String REQUEST_PEDNING = "request_pending";
     private static final String ERROR = "error";
@@ -40,6 +41,7 @@ public class MoviesListFragment extends Fragment {
     private CompositeSubscription mSubscriptions = new CompositeSubscription();
     private SpotifyMoviesModel mModel;
     private GridLayoutManager mGridLayoutManager;
+    private OnMovieSelectionListener onMovieSelectionListener;
 
 
     @Override
@@ -62,7 +64,7 @@ public class MoviesListFragment extends Fragment {
         mRecyclerView = (EmptyRecyclerView) root.findViewById(R.id.recyclerView);
 
 
-        mAdapter = new ImageGridAdapter();
+        mAdapter = new ImageGridAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         //mRecyclerView.addItemDecoration(new MarginItemDecoration(getActivity()));
 
@@ -92,6 +94,7 @@ public class MoviesListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        onMovieSelectionListener.onMovieSelected(new Movies(),"No");
     }
 
 
@@ -174,6 +177,18 @@ public class MoviesListFragment extends Fragment {
 
         //outState.putBoolean(LOAD_MORE, mLoadMore);
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        onMovieSelectionListener = (OnMovieSelectionListener)context;
+    }
+
+
+    @Override
+    public void movieselected(Movies movie) {
+        onMovieSelectionListener.onMovieSelected(movie,"Yes");
     }
 
 

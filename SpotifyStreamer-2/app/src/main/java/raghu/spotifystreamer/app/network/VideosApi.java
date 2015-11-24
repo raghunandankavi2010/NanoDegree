@@ -13,7 +13,7 @@ import retrofit.http.Query;
  */
 public interface VideosApi {
 
-    @GET("movie/{id}/videos?api_key=6d32f2a6596004bb66069187b4c9b933")
+    @GET("movie/{id}/videos?api_key=yourapikey")
     Call<VideoList> videos(
             @Path("id") int movieId);
 }

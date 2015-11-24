@@ -1,5 +1,6 @@
 package raghu.spotifystreamer.app.ui;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -16,14 +17,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import raghu.spotifystreamer.app.R;
+import raghu.spotifystreamer.app.model.Movies;
 import raghu.spotifystreamer.app.provider.MoviesContract;
 
 /**
  * Created by Raghunandan on 24-11-2015.
  */
-public class FavouriteFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FavouriteFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> ,OnMovieSelected {
 
-
+    private OnMovieSelectionListener onMovieSelectionListener;
     private static final String[] PROJECTION = new String[]{
             BaseColumns._ID,
             MoviesContract.Movies.MOVIE_ID,
@@ -48,16 +50,21 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_movielist,container,false);
-        getActivity().getSupportLoaderManager().initLoader(0, null, this);
+       // getActivity().getSupportLoaderManager().initLoader(0, null, this);
         mProgress = (ProgressBar) root.findViewById(R.id.progressBar);
         mErrorText = (TextView) root.findViewById(R.id.list_empty);
         mRecyclerView = (EmptyRecyclerView) root.findViewById(R.id.recyclerView);
 
-        mAdapter = new ImageCursorAdapter(getActivity(),mCursor);
+        mAdapter = new ImageCursorAdapter(getActivity(),this,mCursor);
         mRecyclerView.setAdapter(mAdapter);
         return root;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().getSupportLoaderManager().initLoader(0, null, this);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -83,5 +90,21 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
     public void onLoaderReset(Loader<Cursor> loader) {
 
         mAdapter.changeCursor(null);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        onMovieSelectionListener = (OnMovieSelectionListener)context;
+    }
+
+    @Override
+    public void movieselected(Movies movie) {
+        onMovieSelectionListener.onMovieSelected(movie,"Yes");
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onMovieSelectionListener.onMovieSelected(new Movies(),"No");
     }
 }
