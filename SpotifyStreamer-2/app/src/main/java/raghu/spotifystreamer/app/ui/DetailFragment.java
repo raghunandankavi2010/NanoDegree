@@ -55,7 +55,7 @@ import rx.subscriptions.CompositeSubscription;
 public class DetailFragment extends Fragment {
 
 
-    private boolean mRequestPending,mRequestPendingV;
+    private boolean mRequestPending,mRequestPendingV,vis;
     private static final String STATE_REVIEWS = "state_reviews";
     private static final String REQUEST_PEDNING = "request_pending";
     private static final String STATE_TRAILERS = "state_trailers";
@@ -202,10 +202,14 @@ public class DetailFragment extends Fragment {
 
 
         if (savedInstanceState == null) {
+
             //Toast.makeText(getActivity(), "Null", Toast.LENGTH_SHORT).show();
             fetchData();
             fetchVidoes();
         } else {
+
+            vis = savedInstanceState.getBoolean("check", false);
+
             if (savedInstanceState.getBoolean(REQUEST_PEDNINGT, false)) {
                 if (mModel.getVideoRequest() != null) {
                     mSubscriptions.add(
@@ -285,6 +289,13 @@ public class DetailFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu();
+
+    }
+
     public void fetchVidoes()
     {
         mRequestPendingV = true;
@@ -338,6 +349,8 @@ public class DetailFragment extends Fragment {
         outState.putBoolean(REQUEST_PEDNING, mRequestPending);
         outState.putBoolean(REQUEST_PEDNINGT, mRequestPendingV);
         outState.putBoolean(ERROR, mError);
+        outState.putBoolean("check",mMenuItemShare.isVisible());
+
 
 
         //outState.putBoolean(LOAD_MORE, mLoadMore);
@@ -456,7 +469,7 @@ public class DetailFragment extends Fragment {
         inflater.inflate(R.menu.detail_menu, menu);
 
         mMenuItemShare= menu.findItem(R.id.menu_item_share);
-        mMenuItemShare.setVisible(false);
+        mMenuItemShare.setVisible(vis);
 
 
 
