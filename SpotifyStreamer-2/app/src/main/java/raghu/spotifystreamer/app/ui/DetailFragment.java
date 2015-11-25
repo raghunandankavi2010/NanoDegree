@@ -55,7 +55,7 @@ import rx.subscriptions.CompositeSubscription;
 public class DetailFragment extends Fragment {
 
 
-    private boolean mRequestPending,mRequestPendingV,vis;
+    private boolean mRequestPending, mRequestPendingV, vis;
     private static final String STATE_REVIEWS = "state_reviews";
     private static final String REQUEST_PEDNING = "request_pending";
     private static final String STATE_TRAILERS = "state_trailers";
@@ -63,12 +63,12 @@ public class DetailFragment extends Fragment {
     private static final String ERROR = "error";
     private ContentResolver contentResolver;
     private ImageButton fab;
-    private int val, pageCount = 1, totalcount;
+    private int val, review_saved, trailer_saved, pageCount = 1, totalcount;
     private Movies movie;
-    private TextView ratings, release,content;
+    private TextView ratings, release, content,average,mName;
     private ImageView mImage;
     private SpotifyMoviesModel mModel;
-    private CardView review_cardView,trailers_cardView;
+    private CardView review_cardView, trailers_cardView;
     private LinearLayout cont;
     private MenuItem mMenuItemShare;
 
@@ -86,9 +86,38 @@ public class DetailFragment extends Fragment {
             MoviesContract.Movies.MOVIE_BACKDROP_PATH,
             MoviesContract.Movies.MOVIE_POSTER_PATH,
             MoviesContract.Movies.MOVIE_RELEASE_DATE,
-            MoviesContract.Movies.MOVIE_FAVORED
+            MoviesContract.Movies.MOVIE_FAVORED,
+            MoviesContract.Movies.MOVIE_REVIEW_SAVED,
+            MoviesContract.Movies.MOVIE_TRAILERS_SAVED,
     };
+
+    private static final String[] PROJECTION_REVIEWS = new String[]{
+            BaseColumns._ID,
+            MoviesContract.Review.MOVIE_ID,
+            MoviesContract.Review.REVIEW_ID,
+            MoviesContract.Review.REVIEW_AUTHOR,
+            MoviesContract.Review.REVIEW_CONTENT,
+            MoviesContract.Review.REVIEW_URL,
+
+    };
+
+    private String id, iso_639_1, key, name, type, site;
+    private static final String[] PROJECTION_VIDEOS = new String[]{
+            BaseColumns._ID,
+            MoviesContract.Video.MOVIE_ID,
+            MoviesContract.Video.TRAILER_ID,
+            MoviesContract.Video.TRAILER_ISO,
+            MoviesContract.Video.TRAILER_KEY,
+            MoviesContract.Video.TRAILER_NAME,
+            MoviesContract.Video.TRAILER_TYPE,
+            MoviesContract.Video.TRAILER_SITE
+
+    };
+
+
     private Uri uri = MoviesContract.Movies.CONTENT_URI;
+    private Uri review_uri = MoviesContract.Review.CONTENT_URI;
+    private Uri trailer_uri = MoviesContract.Video.CONTENT_URI;
 
     private TextView review;
 
@@ -96,7 +125,7 @@ public class DetailFragment extends Fragment {
     private ArrayList<Videos> mVideos = new ArrayList<>();
 
     private boolean mError;
-    private String firstTrailer;
+    private String firstTrailer, movie_id;
 
 
     public DetailFragment() {
@@ -115,6 +144,7 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Nullable
@@ -124,9 +154,11 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.detail_fragment, container, false);
         mModel = ((RxApp) getActivity().getApplication()).component().spotifyMoviesModel();
         fab = (ImageButton) view.findViewById(R.id.imageButton);
+        mName = (TextView)view.findViewById(R.id.name);
+        average = (TextView) view.findViewById(R.id.average) ;
         review_cardView = (CardView) view.findViewById(R.id.reviews);
         trailers_cardView = (CardView) view.findViewById(R.id.trailers);
-        cont = (LinearLayout)view.findViewById(R.id.containerv);
+        cont = (LinearLayout) view.findViewById(R.id.containerv);
         ratings = (TextView) view.findViewById(R.id.ratings);
         release = (TextView) view.findViewById(R.id.release);
         content = (TextView) view.findViewById(R.id.content);
@@ -134,35 +166,48 @@ public class DetailFragment extends Fragment {
         review = (TextView) view.findViewById(R.id.reviewstext);
 
         movie = getArguments().getParcelable("key");
+        movie_id = String.valueOf(movie.getId());
         contentResolver = getActivity().getContentResolver();
+        Cursor cursor = contentResolver.query(uri, PROJECTION, "movie_title=?", new String[]{movie.getTitle()}, null, null);
+        if (cursor.moveToFirst()) {
+            val = cursor.getInt(11);
+            review_saved = cursor.getInt(cursor.getColumnIndex(MoviesContract.Movies.MOVIE_REVIEW_SAVED));
+            trailer_saved = cursor.getInt(cursor.getColumnIndex(MoviesContract.Movies.MOVIE_TRAILERS_SAVED));
+            Log.i("DetailFragment", "" + review_saved);
+            Log.i("DetailFragment", "" + trailer_saved);
+            Log.i("DetailFragment", "" + movie_id);
+
+        }
+
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-           if(movie!=null) {
-               ratings.append("Movie Name :" + movie.getTitle());
-               ratings.append("\n");
-               ratings.append("Ratings :" + String.valueOf(movie.getVote_avarage()));
-               release.append(movie.getRelease_date());
-               release.append("\n");
+        if (movie != null) {
+            if(!TextUtils.isEmpty(movie.getTitle()))
+            {
+                mName.setText("Name :"+movie.getTitle());
+            }
+            ratings.setText("Ratings :" + String.valueOf(movie.getVote_avarage()));
+            if(!TextUtils.isEmpty(movie.getRelease_date())) {
+                release.setText("Release :"+movie.getRelease_date());
+            }
 
-               release.append("Vote Average :"+String.valueOf(movie.getVote_count()));
 
-               if (!TextUtils.isEmpty(movie.getOverview()))
-                   content.append(movie.getOverview());
-               else
-                   content.setVisibility(View.GONE);
-           }
+            average.setText("Vote Average :" + String.valueOf(movie.getVote_count()));
+
+            if (!TextUtils.isEmpty(movie.getOverview()))
+                content.setText("Description :"+movie.getOverview());
+            else
+                content.setVisibility(View.GONE);
+        }
 
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).setTitle("Details");
 
-        Cursor cursor = contentResolver.query(uri, PROJECTION, "movie_title=?", new String[]{movie.getTitle()}, null, null);
-        if (cursor.moveToFirst())
-            val = cursor.getInt(11);
 
         //Toast.makeText(getActivity(), "" + val, Toast.LENGTH_SHORT).show();
         if (!TextUtils.isEmpty(movie.getTitle())) {
@@ -203,9 +248,17 @@ public class DetailFragment extends Fragment {
 
         if (savedInstanceState == null) {
 
-            //Toast.makeText(getActivity(), "Null", Toast.LENGTH_SHORT).show();
-            fetchData();
-            fetchVidoes();
+            if (review_saved == 0) {
+                fetchData();
+            } else {
+                fetchReviewsFromDatabase();
+            }
+            if (trailer_saved == 0) {
+                fetchVidoes();
+            } else {
+                fetchTrailersFromDatabase();
+            }
+
         } else {
 
             vis = savedInstanceState.getBoolean("check", false);
@@ -243,10 +296,12 @@ public class DetailFragment extends Fragment {
 
 
             } else {
-                fetchVidoes();
+                if (trailer_saved == 0) {
+                    fetchVidoes();
+                } else {
+                    fetchTrailersFromDatabase();
+                }
             }
-
-
 
 
             boolean bool = savedInstanceState.getBoolean(REQUEST_PEDNING, false);
@@ -267,7 +322,7 @@ public class DetailFragment extends Fragment {
                 //Toast.makeText(getActivity(), "List restored"+list.size(), Toast.LENGTH_SHORT).show();
                 mList = list;
 
-                for(Reviews reviews1:mList) {
+                for (Reviews reviews1 : mList) {
                     review.append("Author :" + reviews1.getAuthor());
                     review.append("\n");
                     review.append("Content :" + reviews1.getContent());
@@ -276,17 +331,87 @@ public class DetailFragment extends Fragment {
                 }
 
 
-
             } else {
                 //Toast.makeText(getActivity(), "Something Wrong", Toast.LENGTH_SHORT).show();
-                fetchData();
-                fetchVidoes();
+                if (review_saved == 0) {
+                    fetchVidoes();
+                } else {
+                    fetchTrailersFromDatabase();
+                }
             }
 
         }
 
 
+    }
 
+    private void fetchReviewsFromDatabase() {
+
+        Log.i("DetailFragment", "Reviews");
+
+        if (!TextUtils.isEmpty(movie_id)) {
+            Cursor cursor = null;
+            try {
+                cursor = contentResolver.query(review_uri, PROJECTION_REVIEWS, "movie_id=?", new String[]{movie_id}, null, null);
+                review_cardView.setVisibility(View.VISIBLE);
+                while (cursor.moveToNext()) {
+                    Log.i("DetailFragment", "Reviews Inside" + cursor.getString(cursor.getColumnIndex(MoviesContract.Review.REVIEW_AUTHOR)));
+                    mList.add(getReviewFromCursor(cursor));
+                    review.append("Author :" + cursor.getString(cursor.getColumnIndex(MoviesContract.Review.REVIEW_AUTHOR)));
+                    review.append("\n");
+                    review.append("Content :" + cursor.getString(cursor.getColumnIndex(MoviesContract.Review.REVIEW_CONTENT)));
+                    review.append("\n");
+                    review.append("\n");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (cursor != null)
+                    cursor.close();
+
+            }
+
+        }
+    }
+
+    private void fetchTrailersFromDatabase() {
+        Log.i("DetailFragment", "Trailers");
+        if (!TextUtils.isEmpty(movie_id)) {
+            Cursor cursor = null;
+            try {
+                trailers_cardView.setVisibility(View.VISIBLE);
+                cursor = contentResolver.query(trailer_uri, PROJECTION_VIDEOS, "movie_id=?", new String[]{movie_id}, null, null);
+                while (cursor.moveToNext()) {
+                    Log.i("DetailFragment", "Trailers Inside");
+                    mVideos.add(getVideoFromCursor(cursor));
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (cursor != null)
+                    cursor.close();
+
+            }
+
+            for (Videos video : mVideos) {
+                final View videoView = getActivity().getLayoutInflater().inflate(R.layout.item_video, cont, false);
+                final TextView videoNameView = (TextView) videoView.findViewById(R.id.video_name);
+
+                videoNameView.setText(video.getSite() + ": " +video.getName());
+                videoView.setTag(video);
+                videoView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Videos video = (Videos) view.getTag();
+                        playVideo(video);
+                    }
+                });
+                cont.addView(videoView);
+            }
+
+
+        }
     }
 
     @Override
@@ -296,14 +421,14 @@ public class DetailFragment extends Fragment {
 
     }
 
-    public void fetchVidoes()
-    {
+    public void fetchVidoes() {
         mRequestPendingV = true;
         mSubscriptions.add(
                 mModel.getVideoList(movie.getId())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new VideoListSubscriber()));
     }
+
     public void setMovieFavored(Movies movie, int val) {
 
 
@@ -320,9 +445,11 @@ public class DetailFragment extends Fragment {
             contentValues.put(MoviesContract.Movies.MOVIE_POSTER_PATH, movie.getPoster_path());
             contentValues.put(MoviesContract.Movies.MOVIE_RELEASE_DATE, movie.getRelease_date());
             contentValues.put(MoviesContract.Movies.MOVIE_FAVORED, 1);
+            contentValues.put(MoviesContract.Movies.MOVIE_REVIEW_SAVED, movie.getReviewsaved());
+            contentValues.put(MoviesContract.Movies.MOVIE_TRAILERS_SAVED, movie.getTrailersaved());
             contentResolver.insert(uri, contentValues);
-            if(mList.size()>0)
-            movie.setFavourite(1);
+            if (mList.size() > 0)
+                movie.setFavourite(1);
             //fab.setImageDrawable(getImage(R.drawable.ic_favorite_full));
         } else if (val == 0) {
             contentResolver.delete(
@@ -349,8 +476,7 @@ public class DetailFragment extends Fragment {
         outState.putBoolean(REQUEST_PEDNING, mRequestPending);
         outState.putBoolean(REQUEST_PEDNINGT, mRequestPendingV);
         outState.putBoolean(ERROR, mError);
-        outState.putBoolean("check",mMenuItemShare.isVisible());
-
+        outState.putBoolean("check", mMenuItemShare.isVisible());
 
 
         //outState.putBoolean(LOAD_MORE, mLoadMore);
@@ -384,12 +510,29 @@ public class DetailFragment extends Fragment {
             mRequestPending = false;
             totalcount = mModel.getTotal_pages();
             mList = reviews;
-            for(Reviews reviews1:reviews) {
+            for (Reviews reviews1 : reviews) {
                 review.append("Author :" + reviews1.getAuthor());
                 review.append("\n");
                 review.append("Content :" + reviews1.getContent());
                 review.append("\n");
                 review.append("\n");
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MoviesContract.Review.MOVIE_ID, movie_id);
+                contentValues.put(MoviesContract.Review.REVIEW_ID, reviews1.getId());
+                contentValues.put(MoviesContract.Review.REVIEW_AUTHOR, reviews1.getAuthor());
+                contentValues.put(MoviesContract.Review.REVIEW_CONTENT, reviews1.getContent());
+                contentValues.put(MoviesContract.Review.REVIEW_URL, reviews1.getUrl());
+                contentResolver.insert(review_uri, contentValues);
+            }
+
+            if (!TextUtils.isEmpty(movie_id)) {
+
+                Log.i("DetailFragment","Reviews Saved");
+                ContentValues values = new ContentValues();
+                values.put(MoviesContract.Movies.MOVIE_REVIEW_SAVED, 1);
+                contentResolver.update(uri,
+                        values, "movie_title=?", new String[]{movie.getTitle()});
+                movie.setReviewsaved(1);
             }
 
         }
@@ -414,12 +557,12 @@ public class DetailFragment extends Fragment {
 
         @Override
         public void onNext(ArrayList<Videos> videos) {
-           trailers_cardView.setVisibility(View.VISIBLE);
+            trailers_cardView.setVisibility(View.VISIBLE);
             mRequestPendingV = false;
             mVideos = videos;
             mMenuItemShare.setVisible(true);
 
-            firstTrailer = "http://www.youtube.com/watch?v="+videos.get(0).getKey();
+            firstTrailer = "http://www.youtube.com/watch?v=" + videos.get(0).getKey();
             for (Videos video : videos) {
                 final View videoView = getActivity().getLayoutInflater().inflate(R.layout.item_video, cont, false);
                 final TextView videoNameView = (TextView) videoView.findViewById(R.id.video_name);
@@ -433,10 +576,30 @@ public class DetailFragment extends Fragment {
                         playVideo(video);
                     }
                 });
-                    cont.addView(videoView);
+                cont.addView(videoView);
 
 
+                if (!TextUtils.isEmpty(movie_id)) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MoviesContract.Video.MOVIE_ID, movie_id);
+                    contentValues.put(MoviesContract.Video.TRAILER_ID, video.getId());
+                    contentValues.put(MoviesContract.Video.TRAILER_ISO, video.getIso_639_1());
+                    contentValues.put(MoviesContract.Video.TRAILER_KEY, video.getKey());
+                    contentValues.put(MoviesContract.Video.TRAILER_NAME, video.getName());
+                    contentValues.put(MoviesContract.Video.TRAILER_SITE, video.getSite());
+                    contentValues.put(MoviesContract.Video.TRAILER_TYPE, video.getType());
+                    contentResolver.insert(trailer_uri, contentValues);
+                }
 
+            }
+            if (!TextUtils.isEmpty(movie_id)) {
+
+                Log.i("DetailFragment","Videos Saved");
+                ContentValues values = new ContentValues();
+                values.put(MoviesContract.Movies.MOVIE_TRAILERS_SAVED, 1);
+                contentResolver.update(uri,
+                        values, "movie_title=?", new String[]{movie.getTitle()});
+                movie.setTrailersaved(1);
             }
 
         }
@@ -460,7 +623,7 @@ public class DetailFragment extends Fragment {
         if (video.getSite().equals(Videos.SITE_YOUTUBE))
             getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + video.getKey())));
         else
-            Log.i("DetailFragment","Cannot play video format");
+            Log.i("DetailFragment", "Cannot play video format");
     }
 
     @Override
@@ -468,27 +631,23 @@ public class DetailFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.detail_menu, menu);
 
-        mMenuItemShare= menu.findItem(R.id.menu_item_share);
-        mMenuItemShare.setVisible(vis);
-
-
-
+        mMenuItemShare = menu.findItem(R.id.menu_item_share);
+        //mMenuItemShare.setVisible(vis);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId())
-        {
-            case R.id.menu_item_share :
+        switch (item.getItemId()) {
+            case R.id.menu_item_share:
 
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, firstTrailer);
-                    sendIntent.setType("text/plain");
-                    // Verify the original intent will resolve to at least one activity
-                    if (sendIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        getActivity().startActivity(sendIntent);
-                    }
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, firstTrailer);
+                sendIntent.setType("text/plain");
+                // Verify the original intent will resolve to at least one activity
+                if (sendIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    getActivity().startActivity(sendIntent);
+                }
 
 
                 return true;
@@ -496,6 +655,26 @@ public class DetailFragment extends Fragment {
         return false;
     }
 
+    public Reviews getReviewFromCursor(Cursor cursor) {
+        Reviews review = new Reviews();
+        review.setId(cursor.getString(cursor.getColumnIndex(MoviesContract.Review.REVIEW_ID)));
+        review.setAuthor(cursor.getString(cursor.getColumnIndex(MoviesContract.Review.REVIEW_AUTHOR)));
+        review.setContent(cursor.getString(cursor.getColumnIndex(MoviesContract.Review.REVIEW_CONTENT)));
+        review.setUrl(cursor.getString(cursor.getColumnIndex(MoviesContract.Review.REVIEW_URL)));
+        return review;
+    }
 
+
+    public Videos getVideoFromCursor(Cursor cursor) {
+        Videos video = new Videos();
+        video.setId(cursor.getString(cursor.getColumnIndex(MoviesContract.Video.TRAILER_ID)));
+        video.setIso_639_1(cursor.getString(cursor.getColumnIndex(MoviesContract.Video.TRAILER_ISO)));
+        video.setKey(cursor.getString(cursor.getColumnIndex(MoviesContract.Video.TRAILER_KEY)));
+        video.setName(cursor.getString(cursor.getColumnIndex(MoviesContract.Video.TRAILER_NAME)));
+        video.setSite(cursor.getString(cursor.getColumnIndex(MoviesContract.Video.TRAILER_SITE)));
+        video.setType(cursor.getString(cursor.getColumnIndex(MoviesContract.Video.TRAILER_TYPE)));
+
+        return video;
+    }
 
 }

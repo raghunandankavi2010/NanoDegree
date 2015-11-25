@@ -35,6 +35,7 @@ public class MoviesProvider extends ContentProvider {
     private static final int MOVIE_TYPE = 3;
     private static final int MOVIE_SORTED_TYPE = 4;
     private static final int REVIEWS_MOVIES = 5;
+    private static final int TRAILERS_MOVIES = 6;
 
     private MoviesDatabase mOpenHelper;
 
@@ -47,7 +48,8 @@ public class MoviesProvider extends ContentProvider {
 
         sUriMatcher.addURI(AUTHORITY, "movies", MOVIES);
         sUriMatcher.addURI(AUTHORITY, "movies/*", MOVIES_SORTED);
-
+        sUriMatcher.addURI(AUTHORITY, "videos", TRAILERS_MOVIES);
+        sUriMatcher.addURI(AUTHORITY, "reviews", REVIEWS_MOVIES);
 
     }
 
@@ -77,6 +79,29 @@ public class MoviesProvider extends ContentProvider {
                 assert ctx != null;
                 c.setNotificationUri(ctx.getContentResolver(), uri);
                 return c;
+
+            case REVIEWS_MOVIES:
+                // Return all known entries.
+                builder.table(MoviesContract.Review.TABLE_REVIEWS)
+                        .where(selection, selectionArgs);
+                Cursor cursor = builder.query(db, projection, sortOrder);
+                // Note: Notification URI must be manually set here for loaders to correctly
+                // register ContentObservers.
+                Context ctx1 = getContext();
+                assert ctx1 != null;
+                cursor.setNotificationUri(ctx1.getContentResolver(), uri);
+                return cursor;
+            case TRAILERS_MOVIES:
+                // Return all known entries.
+                builder.table(MoviesContract.Video.TABLE_VIDEOS)
+                        .where(selection, selectionArgs);
+                Cursor cursor1 = builder.query(db, projection, sortOrder);
+                // Note: Notification URI must be manually set here for loaders to correctly
+                // register ContentObservers.
+                Context ctx2 = getContext();
+                assert ctx2 != null;
+                cursor1.setNotificationUri(ctx2.getContentResolver(), uri);
+                return cursor1;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -118,6 +143,16 @@ public class MoviesProvider extends ContentProvider {
                 db.insertOrThrow(MoviesContract.MoviesSorted.TABLE_MOVIESS_SORTED, null, contentValues);
                 notifyChange(uri);
                 return MoviesContract.MoviesSorted.buildMovieUri(contentValues.getAsString(MoviesContract.MoviesSorted.MOVIE_ID));
+            }
+            case REVIEWS_MOVIES: {
+                db.insertOrThrow(MoviesContract.Review.TABLE_REVIEWS, null, contentValues);
+                notifyChange(uri);
+                return MoviesContract.Review.buildReviewsUri(contentValues.getAsString(MoviesContract.Review.REVIEW_ID));
+            }
+            case TRAILERS_MOVIES: {
+                db.insertOrThrow(MoviesContract.Video.TABLE_VIDEOS, null, contentValues);
+                notifyChange(uri);
+                return MoviesContract.Video.buildVideosUri(contentValues.getAsString(MoviesContract.Video.TRAILER_ID));
             }
             default: {
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);

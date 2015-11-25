@@ -36,6 +36,35 @@ public class Videos implements Parcelable{
         return type;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIso_639_1(String iso_639_1) {
+        this.iso_639_1 = iso_639_1;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public Videos()
+    {
+
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
@@ -43,6 +72,7 @@ public class Videos implements Parcelable{
         dest.writeString(this.site);
         dest.writeString(this.key);
         dest.writeString(this.type);
+        dest.writeString(this.iso_639_1);
     }
 
     protected Videos(Parcel in) {
@@ -52,6 +82,7 @@ public class Videos implements Parcelable{
 
         this.key = in.readString();
         this.type = in.readString();
+        this.iso_639_1 = in.readString();
     }
 
     public static final Creator<Videos> CREATOR = new Creator<Videos>() {

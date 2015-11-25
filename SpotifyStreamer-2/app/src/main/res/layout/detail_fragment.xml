@@ -39,34 +39,50 @@
 
 
                     <TextView
-                        android:layout_marginRight="5dp"
-
-                        android:id="@+id/ratings"
+                        android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_toLeftOf="@+id/imageButton"
-                        android:layout_toStartOf="@+id/imageButton"/>
+                        android:layout_toStartOf="@+id/imageButton"
+                        android:text="Name :"/>
 
                     <TextView
+                        android:id="@+id/ratings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/name"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/imageButton"
+                        android:layout_toStartOf="@+id/imageButton"
+                        android:text="Ratings :"/>
+
+                    <TextView
                         android:id="@+id/release"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/ratings"
                         android:layout_alignStart="@+id/ratings"
                         android:layout_below="@+id/ratings"
+                        android:layout_marginRight="5dp"
                         android:layout_marginTop="10dp"
-                        android:text="Release :"
                         android:layout_toLeftOf="@+id/imageButton"
-                        android:layout_toStartOf="@+id/imageButton"/>
+                        android:layout_toStartOf="@+id/imageButton"
+                        android:text="Release :"/>
 
                     <ImageButton
+                        android:tint="@color/primaryColor"
                         android:id="@+id/imageButton"
                         style="@style/FavoriteButton"
                         android:layout_width="wrap_content"
@@ -74,30 +90,44 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:tint="@color/primaryColor"/>
+                        />
 
 
                     <TextView
-                        android:layout_marginRight="10dp"
+                        android:id="@+id/average"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Description :"
-                        android:id="@+id/content"
-                        android:layout_below="@+id/release"
                         android:layout_alignLeft="@+id/release"
                         android:layout_alignStart="@+id/release"
+                        android:layout_below="@+id/release"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
-                </RelativeLayout>
+                        android:text="Average :"/>
 
+
+                    <TextView
+                        android:id="@+id/content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/average"
+                        android:layout_alignStart="@+id/average"
+                        android:layout_below="@+id/average"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Description :"/>
+
+
+                </RelativeLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:visibility="gone"
                 android:id="@+id/reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin">
+                android:layout_margin="@dimen/card_margin"
+                android:visibility="gone">
 
                 <LinearLayout
                     style="@style/Widget.CardContent"
@@ -112,10 +142,10 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
                     <TextView
-                        android:layout_marginRight="10dp"
                         android:id="@+id/reviewstext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         />
 
                 </LinearLayout>
@@ -123,20 +153,20 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:visibility="gone"
                 android:id="@+id/trailers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin"
                 android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin">
+                android:layout_marginRight="@dimen/card_margin"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/containerv"
-                    android:orientation="vertical"
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
 
                 </LinearLayout>

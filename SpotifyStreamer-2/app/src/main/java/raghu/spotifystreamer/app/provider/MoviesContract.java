@@ -27,8 +27,32 @@ public final class MoviesContract {
         String MOVIE_POSTER_PATH = "movie_poster_path";
         String MOVIE_RELEASE_DATE = "movie_release_date";
         String MOVIE_FAVORED = "movie_favored";
+        String MOVIE_REVIEW_SAVED = "review_saved";
+        String MOVIE_TRAILERS_SAVED = "trailer_saved";
 
     }
+
+
+    public interface ReviewsColumns {
+        String MOVIE_ID = "movie_id";
+        String REVIEW_ID = "review_id";
+        String REVIEW_AUTHOR = "review_author";
+        String REVIEW_CONTENT = "review_content";
+        String REVIEW_URL = "review_url";
+
+    }
+
+    public interface TrailerColumns {
+        String MOVIE_ID = "movie_id";
+        String TRAILER_ID = "trailer_id";
+        String TRAILER_ISO = "trailer_iso";
+        String TRAILER_KEY = "trailer_key";
+        String TRAILER_NAME = "trailer_name";
+        String TRAILER_TYPE = "trailer_type";
+        String TRAILER_SITE = "trailer_site";
+
+    }
+
 
     public static final String CONTENT_AUTHORITY = "raghu.spotifystreamer.app.provider";
 
@@ -36,6 +60,53 @@ public final class MoviesContract {
 
     private static final String PATH_MOVIES = "movies";
     private static final String PATH_SORTED_MOVIES = "sortedmovies";
+    private static final String PATH_REVIEWS = "reviews";
+    private static final String PATH_VIDEOS = "videos";
+
+    public static class Video implements TrailerColumns, BaseColumns {
+
+        public static final String TABLE_VIDEOS="Videos";
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VIDEOS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.popularmovies.videos";
+
+
+        public static final String DEFAULT_SORT = BaseColumns._ID + " DESC";
+
+
+        public static Uri buildVideosUri(String videoId) {
+            return CONTENT_URI.buildUpon().appendPath(videoId).build();
+        }
+
+        public static String getReViewId (Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+    }
+
+    public static class Review implements ReviewsColumns, BaseColumns {
+
+        public static final String TABLE_REVIEWS="Reviews";
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_REVIEWS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.popularmovies.reviews";
+
+
+        /** Default "ORDER BY" clause. */
+        public static final String DEFAULT_SORT = BaseColumns._ID + " DESC";
+
+        /** Build {@link Uri} for requested {@link #MOVIE_ID}. */
+        public static Uri buildReviewsUri(String reviewId) {
+            return CONTENT_URI.buildUpon().appendPath(reviewId).build();
+        }
+
+        public static String getReViewId (Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+    }
 
 
     public static class Movies implements MoviesColumns, BaseColumns {

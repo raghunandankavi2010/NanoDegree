@@ -171,9 +171,10 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
                         .commit();
             }else if(check.equals("No"))
             {
-                Fragment detailFragment =  getSupportFragmentManager().findFragmentByTag(MOVIE_DETAILS_FRAGMENT_TAG);
-                if(detailFragment!=null && detailFragment.isVisible())
-                getSupportFragmentManager().beginTransaction().remove(detailFragment).commit();
+                // do nothing detail fragment not removed.
+                // illegalstate exception thrown before cause commit was called after savedInstanceState call
+                // More details @ http://www.androiddesignpatterns.com/2013/08/fragment-transaction-commit-state-loss.html
+
 
             }
         }

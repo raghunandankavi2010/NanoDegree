@@ -9,7 +9,7 @@ import android.os.Parcelable;
 public class Movies implements Parcelable {
 
 
-    private int id,vote_count,favourite;
+    private int id,vote_count,favourite,reviewsaved,trailersaved;
     private float vote_average,popularity;
 
     private String original_language,original_title,overview,release_date,poster_path,title,generids,backdrop_path;
@@ -18,6 +18,22 @@ public class Movies implements Parcelable {
     public Movies()
     {
 
+    }
+
+    public void setReviewsaved(int reviewsaved) {
+        this.reviewsaved = reviewsaved;
+    }
+
+    public void setTrailersaved(int trailersaved) {
+        this.trailersaved = trailersaved;
+    }
+
+    public int getTrailersaved() {
+        return trailersaved;
+    }
+
+    public int getReviewsaved() {
+        return reviewsaved;
     }
 
     public void setFavored(boolean favored) {

@@ -88,11 +88,12 @@ public class VoteCountFragment extends Fragment implements OnMovieSelected {
     }
 
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+
+  /*  @Override
+    public void onPause() {
+        super.onPause();
         onMovieSelectionListener.onMovieSelected(new Movies(),"No");
-    }
+    }*/
 
 
     @Override

@@ -100,9 +100,10 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
     public void movieselected(Movies movie) {
         onMovieSelectionListener.onMovieSelected(movie,"Yes");
     }
+
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onStop() {
+        super.onStop();
         onMovieSelectionListener.onMovieSelected(new Movies(),"No");
     }
 }

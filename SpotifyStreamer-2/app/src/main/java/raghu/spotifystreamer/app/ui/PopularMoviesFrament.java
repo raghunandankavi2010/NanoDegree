@@ -95,12 +95,6 @@ public class PopularMoviesFrament extends Fragment implements OnMovieSelected {
         onMovieSelectionListener = (OnMovieSelectionListener)context;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onMovieSelectionListener.onMovieSelected(new Movies(),"No");
-    }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -170,6 +164,7 @@ public class PopularMoviesFrament extends Fragment implements OnMovieSelected {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         if (mAdapter.getmList().size() > 0) {
             outState.putParcelableArrayList(STATE_MOVIES, mAdapter.getmList());
         }
