@@ -3,7 +3,8 @@ Learning to use some of the new opensource libraries that can make Android appli
 Libraries used in this example:
  * RxJava & RxAndroid
  * Dagger 2
- * Retrofit 
+ * Retrofit
+ * SqlBrite
  
  
  
