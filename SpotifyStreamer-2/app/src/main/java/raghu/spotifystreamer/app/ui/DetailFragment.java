@@ -6,17 +6,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -144,8 +141,10 @@ public class DetailFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-//        mMovieObservable.unsubscribeOn(Schedulers.io());
+        if(mReviewObservable!=null)
+        mReviewObservable.unsubscribeOn(Schedulers.io());
+        if(mVideoObservable!=null)
+        mVideoObservable.unsubscribeOn(Schedulers.io());
         mSubscriptions.unsubscribe();
     }
 
@@ -631,7 +630,6 @@ public class DetailFragment extends Fragment {
             trailers_cardView.setVisibility(View.VISIBLE);
             mRequestPendingV = false;
             mVideos = videos;
-            //mMenuItemShare.setVisible(true);
 
             firstTrailer = "http://www.youtube.com/watch?v=" + videos.get(0).getKey();
             for (Videos video : videos) {
@@ -709,7 +707,6 @@ public class DetailFragment extends Fragment {
         inflater.inflate(R.menu.detail_menu, menu);
 
         mMenuItemShare = menu.findItem(R.id.menu_item_share);
-        //mMenuItemShare.setVisible(vis);
     }
 
     @Override

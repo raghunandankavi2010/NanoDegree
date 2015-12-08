@@ -2,6 +2,9 @@ package raghu.spotifystreamer.app.model;
 
 import android.util.Log;
 
+import com.squareup.okhttp.OkHttpClient;
+
+import raghu.spotifystreamer.app.network.NetworkModule;
 import raghu.spotifystreamer.app.network.ReviewsApi;
 import raghu.spotifystreamer.app.network.SpotifyMoviesApi;
 
@@ -31,11 +34,13 @@ public class SpotifyMoviesModel {
     private Observable<ArrayList<Videos>> mVidoes;
 
 
+
     @Inject
-    public SpotifyMoviesModel(SpotifyMoviesApi api,ReviewsApi mRapi,VideosApi mVApi) {
+    public SpotifyMoviesModel(SpotifyMoviesApi api, ReviewsApi mRapi, VideosApi mVApi) {
         this.mApi = api;
         this.mRApi = mRapi;
-       this.mVApi = mVApi;
+        this.mVApi = mVApi;
+
     }
 
 

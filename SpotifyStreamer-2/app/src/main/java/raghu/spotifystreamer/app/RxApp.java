@@ -8,15 +8,18 @@ import raghu.spotifystreamer.app.network.NetworkModule;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import raghu.spotifystreamer.app.network.OkHttpModule;
 
 
 public class RxApp extends Application {
 
     @Singleton
-    @Component(modules = NetworkModule.class)
+    @Component(modules = {NetworkModule.class,OkHttpModule.class})
     public interface NetworkComponent {
         SpotifyMoviesModel spotifyMoviesModel();
     }
+
+
 
     private NetworkComponent mComponent = null;
 
@@ -30,7 +33,10 @@ public class RxApp extends Application {
         super.onCreate();
 
         if (mComponent == null) {
-            mComponent = DaggerRxApp_NetworkComponent.create();
+            mComponent = DaggerRxApp_NetworkComponent.builder()
+                    .networkModule(new NetworkModule(new OkHttpModule()))
+                    .build();
+           // mComponent = DaggerRxApp_NetworkComponent.create();
         }
 
         sInstance = (RxApp) getApplicationContext();

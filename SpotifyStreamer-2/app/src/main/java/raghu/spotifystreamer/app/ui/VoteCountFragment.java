@@ -203,11 +203,7 @@ public class VoteCountFragment extends Fragment implements OnMovieSelected {
             mRequestPending = false;
             mProgress.setVisibility(View.INVISIBLE);
             mAdapter.addPosts(movies);
-            Log.i("MoviesListFragment", ".............");
-            for(Movies m :movies)
-            {
-                Log.i("MoviesListFragment",m.getTitle());
-            }
+
 
         }
 

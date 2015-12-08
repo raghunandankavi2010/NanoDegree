@@ -7,7 +7,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "net.pmellaaho.rxapp"
+        applicationId "raghu.spotifystreamer.app"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1

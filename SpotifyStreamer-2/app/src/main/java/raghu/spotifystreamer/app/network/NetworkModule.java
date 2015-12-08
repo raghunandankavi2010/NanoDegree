@@ -11,6 +11,9 @@ import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit.GsonConverterFactory;
@@ -20,8 +23,20 @@ import retrofit.Retrofit;
 import static java.lang.String.format;
 
 @Module
+        (
+                includes = NetworkModule.class
+        )
 public class NetworkModule {
+
     public static final String MOVIE_DB_API_URL = "http://api.themoviedb.org/3/";
+    private OkHttpModule okHttpModule;
+
+    public NetworkModule(OkHttpModule okHttpModule)
+    {
+      this.okHttpModule = okHttpModule;
+    }
+
+
 
 
  /*   @Provides
@@ -69,7 +84,7 @@ public class NetworkModule {
     @Provides
     SpotifyMoviesApi getApi() {
 
-        OkHttpClient okHttpClient = new OkHttpClient();
+  /*      OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS); // connect timeout
         okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
 
@@ -93,12 +108,12 @@ public class NetworkModule {
 
                 return response;
             }
-        });
+        });*/
 
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MOVIE_DB_API_URL)
-                .client(okHttpClient)
+                .client(okHttpModule.getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -110,7 +125,7 @@ public class NetworkModule {
     @Provides
     ReviewsApi getReviewsApi() {
 
-        OkHttpClient okHttpClient = new OkHttpClient();
+      /*  OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS); // connect timeout
         okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
 
@@ -135,11 +150,11 @@ public class NetworkModule {
                 return response;
             }
         });
-
+*/
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MOVIE_DB_API_URL)
-                .client(okHttpClient)
+                .client(okHttpModule.getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -151,7 +166,7 @@ public class NetworkModule {
     @Provides
     VideosApi getVideosApi() {
 
-        OkHttpClient okHttpClient = new OkHttpClient();
+       /* OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS); // connect timeout
         okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
 
@@ -175,12 +190,12 @@ public class NetworkModule {
 
                 return response;
             }
-        });
+        });*/
 
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MOVIE_DB_API_URL)
-                .client(okHttpClient)
+                .client(okHttpModule.getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -188,5 +203,6 @@ public class NetworkModule {
         return retrofit.create(VideosApi.class);
 
     }
+
 
 }
