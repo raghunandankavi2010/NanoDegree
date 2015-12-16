@@ -34,7 +34,7 @@ public class RxApp extends Application {
 
         if (mComponent == null) {
             mComponent = DaggerRxApp_NetworkComponent.builder()
-                    .networkModule(new NetworkModule(new OkHttpModule()))
+                    .networkModule(new NetworkModule())
                     .build();
            // mComponent = DaggerRxApp_NetworkComponent.create();
         }

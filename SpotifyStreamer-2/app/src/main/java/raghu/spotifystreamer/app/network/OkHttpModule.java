@@ -15,8 +15,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+
 
 /**
  * Created by Raghunandan on 08-12-2015.
