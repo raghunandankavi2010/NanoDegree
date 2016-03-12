@@ -13,6 +13,8 @@ import raghu.spotifystreamer.app.model.SpotifyMoviesModel;
 @Singleton
 @Component(modules = {OkHttpModule.class})
 public interface OkHttpComponent {
+
+    //OkHttpModule prOkHttpModule();
     void inject(NetworkModule networkModule);
 }
 

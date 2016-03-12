@@ -13,12 +13,14 @@
 
 
         <ImageView
+            android:stateListAnimator="@animator/raise"
             android:foreground="@drawable/ripple"
             android:focusableInTouchMode="true"
             android:clickable="true"
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_height"
+            android:adjustViewBounds="true"
             android:scaleType="fitXY"
         />
     <!--<View

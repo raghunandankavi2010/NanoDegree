@@ -27,6 +27,7 @@
                 android:value=".ui.MainActivity"/>
         </activity>
 
+
         <provider
             android:name="raghu.spotifystreamer.app.provider.MoviesProvider"
             android:authorities="raghu.spotifystreamer.app.provider"

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
@@ -271,8 +272,6 @@ public class DetailFragment extends Fragment {
             }
 
         } else {
-
-
 
             if (savedInstanceState.getBoolean(REQUEST_PEDNINGT, false)) {
                 if (mModel.getVideoRequest() != null) {
@@ -548,7 +547,7 @@ public class DetailFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return getResources().getDrawable(id, getActivity().getTheme());
         } else {
-            return getResources().getDrawable(id);
+            return ContextCompat.getDrawable(getActivity(),id);//getResources().getDrawable(id);
         }
     }
 

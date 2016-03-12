@@ -49,7 +49,7 @@ public class NetworkModule {
                 .baseUrl(MOVIE_DB_API_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                 .build();
 
 
         return retrofit.create(SpotifyMoviesApi.class);

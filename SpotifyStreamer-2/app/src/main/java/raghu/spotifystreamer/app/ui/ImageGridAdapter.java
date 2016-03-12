@@ -1,5 +1,6 @@
 package raghu.spotifystreamer.app.ui;
 
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import raghu.spotifystreamer.app.R;
 import raghu.spotifystreamer.app.Utils;
@@ -94,11 +96,38 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         if(vh instanceof ViewHolder_item) {
 
-            ViewHolder_item viewHolder = (ViewHolder_item) vh;
+            final ViewHolder_item viewHolder = (ViewHolder_item) vh;
+
+          /*  Transformation transformation = new Transformation() {
+
+
+                @Override
+                public Bitmap transform(Bitmap source) {
+                    int targetWidth =viewHolder.m_Image.getWidth();
+
+                    double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
+                    int targetHeight = (int) (targetWidth * aspectRatio);
+                    Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+                    if (result != source) {
+                        // Same bitmap is returned if sizes are the same
+                        source.recycle();
+                    }
+                    return result;
+                }
+
+                @Override
+                public String key() {
+                    return "transformation" + " desiredWidth";
+                }
+            };
+*/
+
             Picasso.with(viewHolder.m_Image.getContext()).
+
                     load(Utils.BASE_IMAGE_URL+
                             viewHolder.m_Image.getContext().getResources().getString(R.string.phone_size)+
                             mList.get(position).getPoster_path())
+                    //.transform(transformation)
                     .into(viewHolder.m_Image);
         }else {
             ((ProgressViewHolder)vh).progressBar.setIndeterminate(true);
@@ -108,7 +137,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     // inner class to hold a reference to each item of RecyclerView
-    public  static class ViewHolder_item extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public  class ViewHolder_item extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView m_Image;
         public CardView cv;
@@ -131,7 +160,10 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             }*/
 
+
+
             int pos = getAdapterPosition();
+
             Movies movie = mList.get(pos);
             if(onMovieSelected!=null)
                 onMovieSelected.movieselected(movie);

@@ -46,6 +46,8 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
     private ImageCursorAdapter mAdapter;
     private Cursor mCursor;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
