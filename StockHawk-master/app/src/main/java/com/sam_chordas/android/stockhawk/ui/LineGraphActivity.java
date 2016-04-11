@@ -34,8 +34,10 @@ import javax.inject.Inject;
  */
 public class LineGraphActivity extends AppCompatActivity {
 
+    /* use dagger to inject presenter */
     @Inject
     LineGraphDataPresenter lineGraphDataPresenter;
+
     private com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar progressCircle;
     private TextView errorMessage;
 
@@ -58,6 +60,7 @@ public class LineGraphActivity extends AppCompatActivity {
         String companySymbol = getIntent().getStringExtra("symbol");
 
         if (savedInstanceState == null) {
+            // get the details once.
             lineGraphDataPresenter.fetchGraphDetails_Symbol(companySymbol);
         }
 
@@ -132,6 +135,7 @@ public class LineGraphActivity extends AppCompatActivity {
         }
     }
 
+    /* saved data load after rotation */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null && savedInstanceState.containsKey("mypojo")) {
@@ -146,5 +150,15 @@ public class LineGraphActivity extends AppCompatActivity {
             }
         }
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(lineGraphDataPresenter!=null)
+        {
+            // call to unsubscibre subscription
+            lineGraphDataPresenter.onDestroy();
+        }
     }
 }

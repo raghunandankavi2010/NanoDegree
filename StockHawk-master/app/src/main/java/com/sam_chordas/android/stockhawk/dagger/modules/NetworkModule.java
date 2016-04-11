@@ -33,8 +33,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
-//import java.io.InputStream;
-//import okio.GzipSource;
+
 
 /**
  * Created by Raghunandan on 16-12-2015.
@@ -59,7 +58,7 @@ public class NetworkModule {
 
 
         //InputStream caInput = application.getApplicationContext().getResources().openRawResource(R.raw.nginx);
-        client.setSslSocketFactory(trustAllHosts().getSocketFactory());
+        //client.setSslSocketFactory(trustAllHosts().getSocketFactory());
         client.setHostnameVerifier(DO_NOT_VERIFY);
         client.setConnectTimeout(5, TimeUnit.SECONDS); // connect timeout
         client.setReadTimeout(5, TimeUnit.SECONDS);
@@ -70,24 +69,13 @@ public class NetworkModule {
             public Response intercept(Chain chain) throws IOException {
 
                 Request originalRequest = chain.request(); //Current Request
-                //originalRequest.header()\
-                //originalRequest.header("charset=utf-8");
-                //RequestBody rb = RequestBody.create(originalRequest.body().contentType(),bodyToString(originalRequest));
-                //originalRequest.newBuilder().post(rb);
 
-                //if(originalRequest.body().toString()!=null)
-                //Log.i("Body",bodyToString(originalRequest));
-                Log.i("SSL Factory",""+client.getSslSocketFactory());
-                Log.i("Host Name",""+client.getHostnameVerifier());
                 Response response = chain.proceed(originalRequest); //Get response of the request
-                //final Response copy = response.newBuilder().removeHeader("Content-Type").build();
 
 
                 //I am logging the response body in debug mode. When I do this I consume the response (OKHttp only lets you do this once) so i have re-build a new one using the cached body
                 String bodyString = response.body().string();
-                //String newString = new String(bodyString.getBytes("UTF-8"), "UTF-8");
-                //Log.i("Response Body in UTF 8", newString);
-                //Log.i("Response Body", bodyString);
+
 
                 Log.i("NetworkModule", String.format("Sending request %s with headers %s ", originalRequest.url(), originalRequest.headers()));
                 Log.i("", (String.format("Got response HTTP %s %s \n\n with body %s \n\n with headers %s ", response.code(), response.message(), bodyString, response.headers())));
@@ -95,32 +83,6 @@ public class NetworkModule {
                 response = response.newBuilder().body(
                         ResponseBody.create(response.body().contentType(), bodyString))
                         .build();
-
-                // May be required to display multi language content
-                /*BufferedSource buffer = Okio.buffer(response.body().source());
-                String content = buffer.readUtf8();
-
-                response = response.newBuilder().body(
-                        ResponseBody.create(response.body().contentType(), content))
-                        .build();
-
-                Log.i("Response Body", response.body().string());
-
-                Log.i("NetworkModule",
-                        String.format("Sending request %s with headers %s ",
-                                originalRequest.url(),
-                                originalRequest.headers()));
-                Log.i("",
-                        (String.format("Got response HTTP %s %s \n\n with body %s \n\n with headers %s ", response.code(), response.message(), response.body().string(), response.headers())));*/
-
-
-                // in case you have zipped response
-                //BufferedSource buffer = Okio.buffer(new GzipSource(response.body().source()));
-                //String content = buffer.readUtf8();
-
-                // remove header
-                /*ResponseBody wrappedBody = ResponseBody.create(contentType, content);
-                return response.newBuilder().removeHeader("Content-Encoding").body(wrappedBody).build();*/
 
                 return response;
             }
@@ -141,7 +103,10 @@ public class NetworkModule {
         return retrofit;
     }
 
-    private static String bodyToString(final Request request){
+
+ /* copied from a different project. not required */
+
+/*    private static String bodyToString(final Request request){
 
         try {
             final Request copy = request.newBuilder().build();
@@ -151,11 +116,11 @@ public class NetworkModule {
         } catch (final IOException e) {
             return "did not work";
         }
-    }
+    }*/
 
 
-
-    private static SSLContext trustAllHosts() {
+ /* copied from a different project. not required */
+ /*   private static SSLContext trustAllHosts() {
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
@@ -180,7 +145,7 @@ public class NetworkModule {
             e.printStackTrace();
         }
         return sc;
-    }
+    }*/
 
 
 

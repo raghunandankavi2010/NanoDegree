@@ -13,6 +13,7 @@ import rx.Observable;
  */
 public interface API {
 
+    // get graph details for a symbol
     @GET("{companySymbol}/chartdata;type=quote;range=5y/json")
     Call<ResponseBody> getGraphDEtails(@Path("companySymbol") String symbol);
 

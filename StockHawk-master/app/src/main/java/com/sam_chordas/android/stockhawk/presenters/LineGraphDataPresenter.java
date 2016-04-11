@@ -13,7 +13,9 @@ import org.greenrobot.eventbus.EventBus;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.internal.operators.CompletableOnSubscribeTimeout;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Raghunandan on 08-04-2016.
@@ -21,6 +23,8 @@ import rx.schedulers.Schedulers;
 public class LineGraphDataPresenter  {
 
     private LineGraphApi lineGraphApi;
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+
     @Inject
     public LineGraphDataPresenter(LineGraphApi lineGraphApi) {
         this.lineGraphApi = lineGraphApi;
@@ -28,8 +32,10 @@ public class LineGraphDataPresenter  {
 
     public void fetchGraphDetails_Symbol(String companySymbol) {
 
+        /* Make sure observable runs on the background thread with scheduler.io */
+        /* subscription on ui thread */
         Observable<MyPojo> response =lineGraphApi.fetchDetails(companySymbol);
-        response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        compositeSubscription.add(response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MyPojo>() {
                     @Override
                     public void onCompleted() {
@@ -39,19 +45,27 @@ public class LineGraphDataPresenter  {
                     @Override
                     public void onError(Throwable e) {
 
+                        // use event bus to communicate data. could have used a interface as a callback here
                         EventBus.getDefault().post(new ErrorEvent(e));
                     }
 
                     @Override
                     public void onNext(MyPojo myPojo) {
 
-                        Log.i("Presenter",""+myPojo.getSeries().size());
+                        //Log.i("Presenter",""+myPojo.getSeries().size());
                         EventBus.getDefault().post(new GraphDetailEvent(myPojo));
                     }
-                });
+                }));
 
 
     }
+
+    public void onDestroy()
+    {
+        // unsubscribe subscription
+        compositeSubscription.unsubscribe();
+    }
+
 
 
 }

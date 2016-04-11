@@ -21,6 +21,7 @@ import rx.Subscriber;
 /**
  * Created by Raghunandan on 08-04-2016.
  */
+/* Singleton class*/
 public class LineGraphApi {
 
     @Inject
@@ -34,6 +35,9 @@ public class LineGraphApi {
         SotckHawkApplication.netcomponent().inject(this);
     }
 
+    /* class is singleton. cache() operator is used so that observable continues with the old one
+       even after rotation preventing from making another network call.
+     */
     public Observable<MyPojo> fetchDetails(final String companySymbol) {
 
 
@@ -54,11 +58,12 @@ public class LineGraphApi {
                                 if (result.startsWith("finance_charts_json_callback( ")) {
                                     result = result.substring(29, result.length() - 2);
                                 }
-
+                                // convert json to pojo
                                 Gson gson =new GsonBuilder()
                                         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES)
                                         .create();
                                 MyPojo pojo = gson.fromJson(result,MyPojo.class);
+
                                 subscriber.onNext(pojo);
 
 
@@ -78,7 +83,7 @@ public class LineGraphApi {
             }
         });
 
-        myPojoObservable.cache();
+        myPojoObservable.cache();// cache to continue observable if not finished
        return myPojoObservable;
     }
 }
