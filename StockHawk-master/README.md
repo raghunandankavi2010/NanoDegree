@@ -1,19 +1,10 @@
 # NanoDegree
-App SpotifyStreamer :
+App Stock hawk :
 
-You will need api key from the spotify web site to access the api. 
+A project developed as part of Udacity Android NanoDegree.
 
+Review Link snap shot :
 
-Your Api key in ReviewsApi.java
-
-    @GET("movie/{id}/reviews?api_key=yourapikey")
-	
-Your Api key in SpotifyMoviesApi.java
+https://github.com/raghunandankavi2010/NanoDegree/blob/master/StockHawk-master/1.PNG
 
 
-    @GET("discover/movie?api_key=yourapikey")
-	
-Your Api key in SpotifyMoviesApi.java
-
-
-	@GET("movie/{id}/videos?api_key=yourapikey")
