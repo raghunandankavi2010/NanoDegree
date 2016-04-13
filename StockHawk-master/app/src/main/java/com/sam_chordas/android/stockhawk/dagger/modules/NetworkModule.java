@@ -39,14 +39,9 @@ import retrofit.RxJavaCallAdapterFactory;
 @Module
 public class NetworkModule {
 
-    private final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
-        }
-    };
 
 
-
+    /* application is not needed. In case we need to cache ( okhttp cache */
     @Provides
     @UserScope
     OkHttpClient provideOkHttpClient(Application application) {

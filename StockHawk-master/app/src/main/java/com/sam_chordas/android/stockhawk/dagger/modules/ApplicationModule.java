@@ -17,7 +17,6 @@ import dagger.Provides;
 public class ApplicationModule {
 
     private Application app;
-    private String PREF_NAME = "prefs";
 
 
 
