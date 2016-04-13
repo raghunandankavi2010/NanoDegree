@@ -53,6 +53,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+  private TextView erroText;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     // The intent service is for executing immediate pulls from the Yahoo API
     // GCMTaskService can only schedule tasks, they cannot execute immediately
     mServiceIntent = new Intent(this, StockIntentService.class);
+    erroText = (TextView)this.findViewById(R.id.errorText);
+    erroText.setVisibility(View.GONE);
     if (savedInstanceState == null){
       // Run the initialize task service so that some stocks appear upon an empty database
       mServiceIntent.putExtra("tag", "init");
@@ -113,7 +116,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { input.toString() }, null);
                   if (c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                        Toast.makeText(MyStocksActivity.this, getString(R.string.stock_saved),
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
@@ -169,12 +172,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   }
 
   public void networkToast(){
+    erroText.setText(getString(R.string.network_toast));
+    erroText.setVisibility(View.VISIBLE);
     Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
   }
 
   public void restoreActionBar() {
     ActionBar actionBar = getSupportActionBar();
-    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
     actionBar.setDisplayShowTitleEnabled(true);
     actionBar.setTitle(mTitle);
   }

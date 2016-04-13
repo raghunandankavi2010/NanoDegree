@@ -33,8 +33,6 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
-
-
 /**
  * Created by Raghunandan on 16-12-2015.
  */
@@ -55,11 +53,6 @@ public class NetworkModule {
 
         final OkHttpClient client = new OkHttpClient();
 
-
-
-        //InputStream caInput = application.getApplicationContext().getResources().openRawResource(R.raw.nginx);
-        //client.setSslSocketFactory(trustAllHosts().getSocketFactory());
-        client.setHostnameVerifier(DO_NOT_VERIFY);
         client.setConnectTimeout(5, TimeUnit.SECONDS); // connect timeout
         client.setReadTimeout(5, TimeUnit.SECONDS);
 
@@ -71,7 +64,7 @@ public class NetworkModule {
                 Request originalRequest = chain.request(); //Current Request
 
                 Response response = chain.proceed(originalRequest); //Get response of the request
-
+                //final Response copy = response.newBuilder().removeHeader("Content-Type").build();
 
                 //I am logging the response body in debug mode. When I do this I consume the response (OKHttp only lets you do this once) so i have re-build a new one using the cached body
                 String bodyString = response.body().string();
@@ -83,6 +76,7 @@ public class NetworkModule {
                 response = response.newBuilder().body(
                         ResponseBody.create(response.body().contentType(), bodyString))
                         .build();
+
 
                 return response;
             }
@@ -102,52 +96,5 @@ public class NetworkModule {
                 .build();
         return retrofit;
     }
-
-
- /* copied from a different project. not required */
-
-/*    private static String bodyToString(final Request request){
-
-        try {
-            final Request copy = request.newBuilder().build();
-            final Buffer buffer = new Buffer();
-            copy.body().writeTo(buffer);
-            return buffer.readUtf8();
-        } catch (final IOException e) {
-            return "did not work";
-        }
-    }*/
-
-
- /* copied from a different project. not required */
- /*   private static SSLContext trustAllHosts() {
-        // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-            public X509Certificate[] getAcceptedIssuers() {
-                return new X509Certificate[] {};
-            }
-
-            public void checkClientTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
-            }
-
-            public void checkServerTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
-            }
-        } };
-
-        // Install the all-trusting trust manager
-        SSLContext sc =null;
-        try {
-            sc = SSLContext.getInstance("TLS");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sc;
-    }*/
-
-
-
 
 }

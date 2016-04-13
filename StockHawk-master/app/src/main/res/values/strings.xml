@@ -14,4 +14,7 @@
   <string name="loading_failed">Loading Failed</string>
   <string name="widget_title">Stock Quote</string>
   <string name="empty_list">Empty List</string>
+  <string name="search_stock_Symbol">Search Stock by Symbol</string>
+  <string name="stock_saved">This stock is already saved!</string>
+
 </resources>

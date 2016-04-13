@@ -13,6 +13,7 @@
       />
 
   <com.melnykov.fab.FloatingActionButton
+      android:contentDescription="@string/search_stock_Symbol"
       android:id="@+id/fab"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -26,5 +27,13 @@
       fab:fab_type="normal"
       fab:layout_anchor="recycler_view"
       fab:layout_anchorGravity="bottom | end"
+      />
+
+  <TextView
+      android:id="@+id/errorText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="16dp"
       />
 </FrameLayout>
