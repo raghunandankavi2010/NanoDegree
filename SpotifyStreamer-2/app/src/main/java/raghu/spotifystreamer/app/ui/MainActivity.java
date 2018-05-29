@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -15,11 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import raghu.spotifystreamer.app.R;
 import raghu.spotifystreamer.app.model.Movies;
+import raghu.spotifystreamer.app.ui.popular.PopularMoviesFrament;
 
 public class MainActivity extends AppCompatActivity implements OnMovieSelectionListener{
 
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
     }
 
     @Override
-    public void onMovieSelected(Movies movie,String check) {
+    public void onMovieSelected(Movies movie,String check,View view,int position) {
         if(mTwoPane)
         {
 
@@ -181,9 +183,22 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
         else
         {
             if(check.equals("Yes")) {
+
+                Pair[] pairs = new Pair[1];
+                pairs[0] = new Pair(view, "detailimage");
+
                 Intent intent = new Intent(this, DetailActivity.class);
+                intent.putExtra("pos",position);
                 intent.putExtra("movie", movie);
-                startActivity(intent);
+                //startActivity(intent);
+                //setExitTransition(new Fade());
+                ActivityOptionsCompat options =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairs);
+
+                ActivityCompat.startActivity(this, intent, options.toBundle());
+                //setExitTransition(TransitionInflater.from(this)
+               //         .inflateTransition(R.transition.grid_exit_transition));
+              // supportPostponeEnterTransition();
             } else if(check.equals("No"))
             {
                 // do nothing
@@ -254,7 +269,9 @@ public class MainActivity extends AppCompatActivity implements OnMovieSelectionL
     @Override
     public void onPause() {
         super.onPause();
-        sp.edit().putInt("id",identifier).commit();
+        sp.edit().putInt("id",identifier).apply();
+
+
     }
 }
 

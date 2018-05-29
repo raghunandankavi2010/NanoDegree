@@ -2,7 +2,7 @@ package raghu.spotifystreamer.app;
 
 import android.app.Application;
 
-import raghu.spotifystreamer.app.model.SpotifyMoviesModel;
+import raghu.spotifystreamer.app.ui.popular.SpotifyMoviesModel;
 import raghu.spotifystreamer.app.network.NetworkModule;
 
 import javax.inject.Singleton;

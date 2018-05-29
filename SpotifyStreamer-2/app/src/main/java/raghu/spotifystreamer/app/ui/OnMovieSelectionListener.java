@@ -1,5 +1,7 @@
 package raghu.spotifystreamer.app.ui;
 
+import android.view.View;
+
 import raghu.spotifystreamer.app.model.Movies;
 
 /**
@@ -7,5 +9,5 @@ import raghu.spotifystreamer.app.model.Movies;
  */
 public interface OnMovieSelectionListener {
 
-    void onMovieSelected(Movies movie,String yes);
+    void onMovieSelected(Movies movie);
 }

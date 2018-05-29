@@ -21,6 +21,7 @@
             >
 
             <raghu.spotifystreamer.app.ui.AspectLockedImageView
+                android:transitionName="detailimage"
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="210dp"

@@ -160,13 +160,13 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             }*/
 
-
+            ImageView imageview = (ImageView) view;
 
             int pos = getAdapterPosition();
 
             Movies movie = mList.get(pos);
             if(onMovieSelected!=null)
-                onMovieSelected.movieselected(movie);
+                onMovieSelected.movieselected(movie,imageview,getAdapterPosition());
        /*     Intent intent =  new Intent(view.getContext(),DetailActivity.class);
             intent.putExtra("movie",movie);
             view.getContext().startActivity(intent);*/

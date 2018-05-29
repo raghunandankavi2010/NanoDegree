@@ -13,8 +13,6 @@ public final class MoviesContract {
 
     public static final String QUERY_PARAMETER_DISTINCT = "distinct";
 
-
-
     public interface MoviesColumns {
         String MOVIE_ID = "movie_id";
         String MOVIE_TITLE = "movie_title";

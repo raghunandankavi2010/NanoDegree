@@ -13,6 +13,7 @@
 
 
         <ImageView
+            android:transitionName="detailimage"
             android:stateListAnimator="@animator/raise"
             android:foreground="@drawable/ripple"
             android:focusableInTouchMode="true"

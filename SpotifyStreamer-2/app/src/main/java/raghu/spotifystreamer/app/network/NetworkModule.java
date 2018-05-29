@@ -2,11 +2,7 @@ package raghu.spotifystreamer.app.network;
 
 import android.util.Log;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
+
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -16,9 +12,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 import raghu.spotifystreamer.app.DaggerInjector;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 import static java.lang.String.format;
@@ -42,7 +39,7 @@ public class NetworkModule {
 
 
     @Provides
-    SpotifyMoviesApi getApi() {
+    Api getApi() {
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -52,12 +49,12 @@ public class NetworkModule {
                  .build();
 
 
-        return retrofit.create(SpotifyMoviesApi.class);
+        return retrofit.create(Api.class);
 
     }
 
     @Provides
-    ReviewsApi getReviewsApi() {
+    Retrofit getReviewsApi() {
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -67,21 +64,7 @@ public class NetworkModule {
                 .build();
 
 
-        return retrofit.create(ReviewsApi.class);
-
-    }
-
-    @Provides
-    VideosApi getVideosApi() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(MOVIE_DB_API_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-
-        return retrofit.create(VideosApi.class);
+        return retrofit;
 
     }
 

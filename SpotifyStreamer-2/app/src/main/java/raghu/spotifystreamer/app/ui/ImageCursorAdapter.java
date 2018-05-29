@@ -97,7 +97,7 @@ public class ImageCursorAdapter extends CursorRecyclerViewAdapter<ImageCursorAda
             int pos = getLayoutPosition();
             Cursor cursor = getItem(pos);
 
-            onMovieSelected.movieselected(getMovieFromCursor(cursor));
+            onMovieSelected.movieselected(getMovieFromCursor(cursor),(ImageView)view,getAdapterPosition());
             /*Intent intent =  new Intent(view.getContext(),DetailActivity.class);
             intent.putExtra("movie",getMovieFromCursor(cursor));
             view.getContext().startActivity(intent);*/

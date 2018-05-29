@@ -4,8 +4,10 @@ package raghu.spotifystreamer.app.provider;
  * Created by Raghunandan on 18-11-2015.
  */
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -88,6 +90,15 @@ public class MoviesDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+    public long insert(ContentValues contentValues){
+        long id = getWritableDatabase().insert(MoviesContract.Movies.TABLE_MOVIES, "", contentValues);
+        if(id <=0 ) {
+            throw new SQLException("Failed to add a movie into db");
+        }
+
+        return id;
     }
 
     public static void deleteDatabase(Context context) {

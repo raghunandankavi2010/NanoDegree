@@ -1,5 +1,7 @@
 package raghu.spotifystreamer.app.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +10,9 @@ import java.util.ArrayList;
 public class MoviesList {
 
     private int total_pages;
+
+    @SerializedName("page")
+    private int pageCount;
 
     public int getTotal_pages() {
         return total_pages;
@@ -18,4 +23,10 @@ public class MoviesList {
     public ArrayList<Movies> getResults() {
         return results;
     }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+
 }

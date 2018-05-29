@@ -9,19 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import raghu.spotifystreamer.app.R;
 import raghu.spotifystreamer.app.RxApp;
 import raghu.spotifystreamer.app.model.Movies;
 
 import java.util.ArrayList;
 
-import raghu.spotifystreamer.app.model.SpotifyMoviesModel;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
+import raghu.spotifystreamer.app.ui.popular.SpotifyMoviesModel;
 
 /**
  * Created by Raghunandan on 13-11-2015.
@@ -38,7 +38,7 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
     private EmptyRecyclerView mRecyclerView;
     private boolean mRequestPending, mError, mLoadMore,check;
     private ImageGridAdapter mAdapter;
-    private CompositeSubscription mSubscriptions = new CompositeSubscription();
+    private CompositeDisposable mSubscriptions = new CompositeDisposable();
     private SpotifyMoviesModel mModel;
     private GridLayoutManager mGridLayoutManager;
     private OnMovieSelectionListener onMovieSelectionListener;
@@ -51,7 +51,7 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
             mAdapter.remove();
         }
 
-        mSubscriptions.unsubscribe();
+        mSubscriptions.dispose();
     }
 
 
@@ -106,8 +106,10 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
                     mProgress.setVisibility(View.VISIBLE);
                     mSubscriptions.add(
                             mModel.getRequest()
+                                    .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new MoviesListSubscriber()));
+
+                                    .subscribeWith(new MoviesListSubscriber()));
 
                     //Toast.makeText(getActivity(), "Continuing Subscription", Toast.LENGTH_SHORT).show();
                 }
@@ -136,7 +138,7 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
                     mSubscriptions.add(
                             mModel.getMoviesList("vote_average.desc", current_page)
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new MoviesListSubscriber()));
+                                    .subscribeWith(new MoviesListSubscriber()));
                     mLoadMore = true;
                     mAdapter.add(null);
                 }
@@ -154,7 +156,7 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
         mSubscriptions.add(
                 mModel.getMoviesList("vote_average.desc", 1)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new MoviesListSubscriber()));
+                        .subscribeWith(new MoviesListSubscriber()));
     }
 
     @Override
@@ -180,13 +182,14 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
     }
 
 
+
     @Override
-    public void movieselected(Movies movie) {
-        onMovieSelectionListener.onMovieSelected(movie,"Yes");
+    public void movieselected(Movies movie, View view, int position) {
+        onMovieSelectionListener.onMovieSelected(movie,"Yes",view,position);
     }
 
 
-    private class MoviesListSubscriber extends Subscriber<ArrayList<Movies>> {
+    private class MoviesListSubscriber extends DisposableObserver<ArrayList<Movies>> {
 
         @Override
         public void onNext(ArrayList<Movies> movies) {
@@ -204,12 +207,6 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
         }
 
         @Override
-        public void onCompleted() {
-            mRequestPending = false;
-            mProgress.setVisibility(View.INVISIBLE);
-        }
-
-        @Override
         public void onError(Throwable t) {
             mRequestPending = false;
             mError = true;
@@ -222,6 +219,12 @@ public class MoviesListFragment extends Fragment implements OnMovieSelected {
                 mProgress.setVisibility(View.INVISIBLE);
                 mErrorText.setVisibility(View.VISIBLE);
             }
+        }
+
+        @Override
+        public void onComplete() {
+            mRequestPending = false;
+            mProgress.setVisibility(View.INVISIBLE);
         }
     }
 }

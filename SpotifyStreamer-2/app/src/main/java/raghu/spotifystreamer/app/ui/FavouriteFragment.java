@@ -98,14 +98,19 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
         onMovieSelectionListener = (OnMovieSelectionListener)context;
     }
 
-    @Override
+   /* @Override
     public void movieselected(Movies movie) {
         onMovieSelectionListener.onMovieSelected(movie,"Yes");
     }
-
+*/
     @Override
     public void onStop() {
         super.onStop();
-        onMovieSelectionListener.onMovieSelected(new Movies(),"No");
+       // onMovieSelectionListener.onMovieSelected(new Movies(),"No");
+    }
+
+    @Override
+    public void movieselected(Movies movie, View view, int position) {
+        onMovieSelectionListener.onMovieSelected(movie,"Yes",view,position);
     }
 }

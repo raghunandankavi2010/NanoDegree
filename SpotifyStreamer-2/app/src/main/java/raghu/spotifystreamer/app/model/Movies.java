@@ -2,11 +2,15 @@ package raghu.spotifystreamer.app.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
+
 
 /**
  * Created by Raghunandan on 23-09-2015.
  */
 public class Movies implements Parcelable {
+
 
 
     private int id,vote_count,favourite,reviewsaved,trailersaved;

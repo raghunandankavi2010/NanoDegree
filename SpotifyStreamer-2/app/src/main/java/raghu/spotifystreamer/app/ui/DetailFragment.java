@@ -1,17 +1,17 @@
 package raghu.spotifystreamer.app.ui;
 
 import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.support.v4.app.Fragment;
-import android.content.ContentResolver;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -26,33 +26,31 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 import raghu.spotifystreamer.app.R;
 import raghu.spotifystreamer.app.RxApp;
 import raghu.spotifystreamer.app.Utils;
 import raghu.spotifystreamer.app.model.Movies;
 import raghu.spotifystreamer.app.model.Reviews;
-import raghu.spotifystreamer.app.model.SpotifyMoviesModel;
 import raghu.spotifystreamer.app.model.Videos;
+import raghu.spotifystreamer.app.ui.popular.SpotifyMoviesModel;
 import raghu.spotifystreamer.app.provider.MoviesContract;
 import raghu.spotifystreamer.app.provider.MoviesDatabase;
 import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Raghunandan on 18-11-2015.
@@ -78,7 +76,7 @@ public class DetailFragment extends Fragment {
     private MenuItem mMenuItemShare;
 
 
-    private CompositeSubscription mSubscriptions = new CompositeSubscription();
+    private CompositeDisposable mSubscriptions = new CompositeDisposable();
     private static final String[] PROJECTION = new String[]{
             BaseColumns._ID,
             MoviesContract.Movies.MOVIE_ID,
@@ -106,7 +104,6 @@ public class DetailFragment extends Fragment {
 
     };
 
-    private String id, iso_639_1, key, name, type, site;
     private static final String[] PROJECTION_VIDEOS = new String[]{
             BaseColumns._ID,
             MoviesContract.Video.MOVIE_ID,
@@ -146,7 +143,7 @@ public class DetailFragment extends Fragment {
         mReviewObservable.unsubscribeOn(Schedulers.io());
         if(mVideoObservable!=null)
         mVideoObservable.unsubscribeOn(Schedulers.io());
-        mSubscriptions.unsubscribe();
+        mSubscriptions.dispose();
     }
 
     @Override
@@ -161,6 +158,7 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.detail_fragment, container, false);
+        getActivity().supportPostponeEnterTransition();
         mModel = ((RxApp) getActivity().getApplication()).component().spotifyMoviesModel();
         fab = (ImageButton) view.findViewById(R.id.imageButton);
         mName = (TextView) view.findViewById(R.id.name);
@@ -195,6 +193,8 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -221,14 +221,40 @@ public class DetailFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setTitle("Details");
 
 
-        //Toast.makeText(getActivity(), "" + val, Toast.LENGTH_SHORT).show();
+        Log.i("URL",""+ Utils.BASE_IMAGE_URL +
+                getResources().getString(R.string.size_500) +
+                movie.getBackdrop_path());
         if (!TextUtils.isEmpty(movie.getTitle())) {
-            Picasso.with(getActivity()).
+
+           Picasso.with(getActivity())
+                    .load(Utils.BASE_IMAGE_URL +
+                            getResources().getString(R.string.size_500) +
+                            movie.getBackdrop_path())
+                    .placeholder(R.color.primaryColor)
+                    .into(mImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                           // ViewCompat.setTransitionName(mImage,"detailimage");
+
+                           // startPostponedEnterTransition()
+                            getActivity().supportStartPostponedEnterTransition();
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //startPostponedEnterTransition()
+                            //ViewCompat.setTransitionName(mImage,"detailimage");
+                            getActivity().supportStartPostponedEnterTransition();
+
+                        }
+                    });
+         /*  Picasso.with(getActivity()).
                     load(Utils.BASE_IMAGE_URL +
                             getResources().getString(R.string.size_500) +
                             movie.getBackdrop_path())
                     .placeholder(R.color.primaryColor)
-                    .into(mImage);
+                    .into(mImage);*/
         } else {
             mImage.setVisibility(View.GONE);
         }
@@ -278,7 +304,7 @@ public class DetailFragment extends Fragment {
                     mSubscriptions.add(
                             mModel.getVideoRequest()
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new VideoListSubscriber()));
+                                    .subscribeWith(new VideoListSubscriber()));
 
                     //Toast.makeText(getActivity(), "Continuing Subscription", Toast.LENGTH_SHORT).show();
                 }
@@ -323,7 +349,7 @@ public class DetailFragment extends Fragment {
                     mSubscriptions.add(
                             mModel.getReviewsRequest()
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new ReviewListSubscriber()));
+                                    .subscribeWith(new ReviewListSubscriber()));
 
                     //Toast.makeText(getActivity(), "Continuing Subscription", Toast.LENGTH_SHORT).show();
                 }
@@ -365,7 +391,8 @@ public class DetailFragment extends Fragment {
 
             mReviewObservable = db.createQuery("Reviews", "SELECT * FROM Reviews WHERE movie_id=" + movie.getId());
             mReviewObservable.subscribeOn(Schedulers.io());
-            mReviewObservable.observeOn(AndroidSchedulers.mainThread())
+
+            mReviewObservable.observeOn(rx.android.schedulers.AndroidSchedulers.mainThread())
                     .subscribe(new Action1<SqlBrite.Query>() {
                         @Override
                         public void call(SqlBrite.Query query) {
@@ -413,7 +440,7 @@ public class DetailFragment extends Fragment {
 
             mVideoObservable = db.createQuery("Videos", "SELECT * FROM Videos WHERE movie_id=" + movie.getId());
             mVideoObservable.subscribeOn(Schedulers.io());
-            mVideoObservable.observeOn(AndroidSchedulers.mainThread())
+            mVideoObservable.observeOn( rx.android.schedulers.AndroidSchedulers.mainThread())
                     .subscribe(new Action1<SqlBrite.Query>() {
                         @Override
                         public void call(SqlBrite.Query query) {
@@ -448,22 +475,7 @@ public class DetailFragment extends Fragment {
 
                         }
                     });
-         /*   Cursor cursor = null;
-            try {
-                trailers_cardView.setVisibility(View.VISIBLE);
-                cursor = contentResolver.query(trailer_uri, PROJECTION_VIDEOS, "movie_id=?", new String[]{movie_id}, null, null);
-                while (cursor.moveToNext()) {
-                    Log.i("DetailFragment", "Trailers Inside");
-                    mVideos.add(getVideoFromCursor(cursor));
-                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (cursor != null)
-                    cursor.close();
-
-            }*/
 
 
         }
@@ -481,7 +493,7 @@ public class DetailFragment extends Fragment {
         mSubscriptions.add(
                 mModel.getVideoList(movie.getId())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new VideoListSubscriber()));
+                        .subscribeWith(new VideoListSubscriber()));
     }
 
     public void setMovieFavored(Movies movie, int val) {
@@ -502,6 +514,8 @@ public class DetailFragment extends Fragment {
             contentValues.put(MoviesContract.Movies.MOVIE_FAVORED, 1);
             contentValues.put(MoviesContract.Movies.MOVIE_REVIEW_SAVED, movie.getReviewsaved());
             contentValues.put(MoviesContract.Movies.MOVIE_TRAILERS_SAVED, movie.getTrailersaved());
+
+
             //contentResolver.insert(uri, contentValues);
 
             AsyncQueryHandler handler = new AsyncQueryHandler(contentResolver) {
@@ -558,11 +572,11 @@ public class DetailFragment extends Fragment {
         mSubscriptions.add(
                 mModel.getReviewsList(movie.getId(), pageCount)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new ReviewListSubscriber()));
+                        .subscribeWith(new ReviewListSubscriber()));
     }
 
 
-    private class ReviewListSubscriber extends Subscriber<ArrayList<Reviews>> {
+    private class ReviewListSubscriber extends DisposableObserver<ArrayList<Reviews>> {
 
         @Override
         public void onNext(ArrayList<Reviews> reviews) {
@@ -606,11 +620,6 @@ public class DetailFragment extends Fragment {
 
         }
 
-        @Override
-        public void onCompleted() {
-            mRequestPending = false;
-
-        }
 
         @Override
         public void onError(Throwable t) {
@@ -619,10 +628,15 @@ public class DetailFragment extends Fragment {
             mError = true;
             review_cardView.setVisibility(View.GONE);
         }
+
+        @Override
+        public void onComplete() {
+            mRequestPending = false;
+        }
     }
 
 
-    private class VideoListSubscriber extends Subscriber<ArrayList<Videos>> {
+    private class VideoListSubscriber extends DisposableObserver<ArrayList<Videos>> {
 
         @Override
         public void onNext(ArrayList<Videos> videos) {
@@ -678,17 +692,16 @@ public class DetailFragment extends Fragment {
         }
 
         @Override
-        public void onCompleted() {
-            mRequestPendingV = false;
-
-        }
-
-        @Override
         public void onError(Throwable t) {
             t.printStackTrace();
             mRequestPendingV = false;
             cont.setVisibility(View.GONE);
 
+        }
+
+        @Override
+        public void onComplete() {
+            mRequestPendingV = false;
         }
 
     }
