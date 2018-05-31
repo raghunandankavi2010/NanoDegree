@@ -9,5 +9,5 @@ import raghu.spotifystreamer.app.model.Movies;
  */
 public interface OnMovieSelectionListener {
 
-    void onMovieSelected(Movies movie);
+    void onMovieSelected(Movies movie,String check,View view,int position);
 }

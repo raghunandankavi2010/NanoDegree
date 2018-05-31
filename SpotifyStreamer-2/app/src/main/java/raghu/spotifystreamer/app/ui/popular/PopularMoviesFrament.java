@@ -118,7 +118,7 @@ public class PopularMoviesFrament extends Fragment implements OnMovieSelected {
     @Override
     public void movieselected(Movies movie, View view, int position) {
 
-        onMovieSelectionListener.onMovieSelected(movie);
+        onMovieSelectionListener.onMovieSelected(movie,"Yes",view,position);
     }
 
 
