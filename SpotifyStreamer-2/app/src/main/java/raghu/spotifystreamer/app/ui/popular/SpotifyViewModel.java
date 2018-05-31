@@ -7,13 +7,16 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import raghu.spotifystreamer.app.data.MoviesDataSource;
 import raghu.spotifystreamer.app.data.MoviesDataSourceFactory;
 import raghu.spotifystreamer.app.model.Movies;
+import raghu.spotifystreamer.app.network.Listing;
 import raghu.spotifystreamer.app.network.NetworkState;
+import raghu.spotifystreamer.app.network.PopularMoviesRepository;
 
 
 public class SpotifyViewModel extends ViewModel {
@@ -24,7 +27,16 @@ public class SpotifyViewModel extends ViewModel {
 
 
     public SpotifyViewModel() {
-        Executor executor = Executors.newFixedThreadPool(5);
+
+        PopularMoviesRepository repository = new PopularMoviesRepository();
+        Listing movies = repository.movies();
+
+        moviesList = movies.getPagedListLiveData();
+        networkState = movies.getNetworkState();
+        initalLoading = movies.getInitalLoading();
+
+
+/*        Executor executor = Executors.newFixedThreadPool(5);
         MoviesDataSourceFactory moviesDataSourceFactory = new MoviesDataSourceFactory(executor);
 
         LiveData<MoviesDataSource> tDataSource = moviesDataSourceFactory.getMutableLiveData();
@@ -55,6 +67,6 @@ public class SpotifyViewModel extends ViewModel {
 
         moviesList = (new LivePagedListBuilder<>(moviesDataSourceFactory, pagedListConfig))
                 .setFetchExecutor(executor)
-                .build();
+                .build();*/
     }
 }
